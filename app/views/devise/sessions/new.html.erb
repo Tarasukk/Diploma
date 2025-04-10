@@ -1,0 +1,45 @@
+<div class="flex items-center justify-center min-h-1/3 px-4">
+  <div class="bg-white shadow-md rounded-lg p-8 w-full max-w-md">
+    <div class="flex justify-center mb-4">
+      <%= image_tag("/images/logo.png", alt: "Logo", class: "h-12 w-auto") %>
+    </div>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-4 mt-8" }) do |f| %>
+      <div class="field">
+        <%= f.label :email, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",
+              class: "w-full px-4 py-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <div class="field">
+        <%= f.label :password, class: "block text-sm font-medium text-gray-700" %>
+        <%= f.password_field :password, autocomplete: "current-password",
+              class: "w-full px-4 py-2 mt-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+      <% if devise_mapping.rememberable? %>
+        <div class="field flex items-center gap-2">
+          <%= f.check_box :remember_me, class: "form-checkbox" %>
+          <%= f.label :remember_me, class: "text-sm text-gray-700" %>
+        </div>
+      <% end %>
+      <div class="actions mb-2">
+        <%= f.submit "Log in", class: "w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition" %>
+      </div>
+    <% end %>
+
+    <div class="mt-6">
+      <% resource_class.omniauth_providers.each do |provider| %>
+        <% if provider == :google_oauth2 %>
+          <%= button_to omniauth_authorize_path(resource_name, provider), method: :post, class: "flex items-center justify-center w-full gap-2 border border-gray-300 rounded py-2 hover:bg-gray-100 transition text-sm", data: { turbo: false } do %>
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-5 w-5">
+            Sign in with Google
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="flex justify-around items-center w-full text-sm text-blue-600 mt-6">
+      <%= link_to "Sign up", new_registration_path(resource_name), class: "hover:underline" %>
+      <%= link_to "Forgot your password?", new_password_path(resource_name), class: "hover:underline" %>
+    </div>
+  </div>
+</div>
