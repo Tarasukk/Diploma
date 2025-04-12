@@ -14,6 +14,7 @@ gem 'bootsnap', require: false
 gem 'devise'
 gem 'omniauth-google-oauth2'
 gem 'image_processing', '~> 1.2'
+gem 'font-awesome-rails'
 
 group :development, :test do
   gem 'debug', platforms: %i[ mri windows ], require: 'debug/prelude'

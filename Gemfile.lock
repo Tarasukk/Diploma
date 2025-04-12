@@ -125,6 +125,8 @@ GEM
     ffi (1.17.1-x86_64-darwin)
     ffi (1.17.1-x86_64-linux-gnu)
     ffi (1.17.1-x86_64-linux-musl)
+    font-awesome-rails (4.7.0.9)
+      railties (>= 3.2, < 9.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -396,6 +398,7 @@ DEPENDENCIES
   debug
   devise
   dotenv
+  font-awesome-rails
   image_processing (~> 1.2)
   importmap-rails
   jbuilder

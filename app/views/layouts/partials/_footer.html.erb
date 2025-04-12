@@ -1,0 +1,25 @@
+<footer class="bg-gray-800 text-white text-sm py-6 px-8 ">
+  <div class="space-y-3">
+    <div class="flex items-center">
+      <p class="block">
+        Ви зайшли під ім'ям <span class="font-semibold"><%= current_user.name %></span>
+      </p>
+      <%= button_to 'Вийти', destroy_user_session_path,
+        method: :delete,
+        class: "ml-2 underline text-white hover:text-gray-300 text-center",
+        form_class: "inline" %>
+    </div>
+
+    <p class="text-gray-400">
+      Зверніться до служби підтримки сайту
+    </p>
+
+    <p class="text-gray-400">
+      Підсумок збереження даних
+    </p>
+
+    <p class="text-gray-400">
+      Завантажте мобільний додаток
+    </p>
+  </div>
+</footer>
