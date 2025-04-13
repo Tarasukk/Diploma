@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   enum role: { user: 'user', admin: 'admin' }, _default: 'user'
 
+  has_many :course_enrollments
+  has_many :enrolled_courses, through: :course_enrollments, source: :course
+  has_many :teaching_courses, class_name: 'Course', foreign_key: 'teacher_id'
+
   has_one_attached :avatar
 
   devise :database_authenticatable, :registerable,

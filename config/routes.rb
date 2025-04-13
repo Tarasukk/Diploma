@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "courses/index"
+  get "courses/show"
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
@@ -15,4 +17,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root 'home#index'
+
+  resources :courses, only: %i[index show]
 end

@@ -1,0 +1,24 @@
+<h1 class="text-xl font-semibold mb-4">Огляд курсу</h1>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  <% @courses.each do |course| %>
+    <div class="bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm hover:shadow transition duration-200">
+      <%= link_to course_path(course) do %>
+        <% if course.preview_file.attached? %>
+          <%= image_tag course.preview_file, class: "w-full h-32 object-cover" %>
+        <% else %>
+          <%= image_tag "/images/default_preview.jpeg", class: "w-full h-32 object-cover" %>
+        <% end %>
+      <% end %>
+      <div class="p-4 space-y-1">
+        <h2 class="text-blue-600 font-medium text-sm hover:underline">
+          <%= link_to course.title, course_path(course) %>
+        </h2>
+        <p class="text-gray-600 text-xs">
+          Кафедра: <%= course.department %>
+        </p>
+        <p class="text-gray-500 text-xs">60% завершено todo</p>
+      </div>
+    </div>
+  <% end %>
+</div>
