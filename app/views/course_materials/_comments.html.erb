@@ -1,0 +1,33 @@
+<% if @submitted.present? %>
+  <div class="">
+    <h2 class="text-xl font-semibold mb-4">Коментарі до відповіді</h2>
+    <% if @comments.any? %>
+      <div class="space-y-3">
+        <% @comments.each do |comment| %>
+          <div class="text-sm text-gray-800 border border-gray-200 p-3 rounded-md bg-white shadow-sm">
+            <strong><%= comment.user.name %>:</strong>
+            <p class="mt-1"><%= comment.content %></p>
+            <span class="text-xs text-gray-400">
+              <%= l(comment.created_at, format: '%d %B %Y %H:%M') %>
+            </span>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-sm italic">Коментарів поки немає.</p>
+    <% end %>
+
+    <%= form_with url: submission_comments_path, local: true, class: "mt-6" do |f| %>
+      <%= hidden_field_tag :course_material_id, @course_material.id %>
+
+      <div>
+        <%= f.text_area :content, rows: 2,
+            class: "w-full border border-gray-200 rounded-md p-2 text-sm",
+            placeholder: "Напишіть свій коментар..." %>
+      </div>
+
+      <%= f.submit "Надіслати",
+          class: "mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm rounded-md font-semibold w-full" %>
+    <% end %>
+  </div>
+<% end %>

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  get "courses/index"
-  get "courses/show"
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
@@ -19,4 +17,8 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :courses, only: %i[index show]
+  resources :course_materials, only: %i[new create show]
+  resources :course_sections, only: %i[create]
+  resources :course_material_submissions, only: [:create]
+  resources :submission_comments, only: [:create]
 end

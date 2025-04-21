@@ -1,1 +1,100 @@
-<p><%= @course.title %></p>
+<div class="p-8 border border-gray-200 rounded-md">
+  <% @course.course_sections.each do |section| %>
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-3"><%= section.title %></h2>
+
+      <% section.course_materials.each do |material| %>
+        <div class="flex items-center gap-3 bg-white border p-3 rounded-md shadow-sm mb-2 justify-between p-4 w-full">
+          <div class="flex items-center gap-3">
+            <% if material.submittable? %>
+              <%= image_tag "/images/attach.png", style: 'max-width: 40px' %>
+            <% else %>
+              <% if material.files.first.content_type == "application/pdf" %>
+                <%= image_tag "/images/pdf.png", style: 'max-width: 40px' %>
+              <% else %>
+                <%= image_tag "/images/docs.png", style: 'max-width: 40px' %>
+              <% end %>
+            <% end %>
+
+            <div class="flex gap-2 ml-2">
+              <p class="text-blue-600 font-medium">
+                <% if material.submittable? %>
+                  <%= link_to material.title, course_material_path(material) %>
+                <% else %>
+                  <%= link_to material.title, url_for(material.files.first), target: "_blank" %>
+                <% end %>
+              </p>
+              <% if material.files.attached? %>
+                <p class="text-xs text-gray-500 flex items-center ">
+                  <%= number_to_human_size(material.files.first.byte_size) %>
+                </p>
+              <% end %>
+            </div>
+          </div>
+
+          <% if material.submittable? %>
+            <%= link_to "Нездано", "#", class: "px-3 py-1 border text-sm rounded ml-2" %>
+          <% else %>
+            <%= link_to "Нездано", "#", class: "px-3 py-1 border text-sm rounded ml-2" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+
+
+  <h1 class="text-xl font-semibold mb-4">Новий матеріал</h1>
+
+  <%= form_with model: @course_material, url: course_materials_path, local: true do |f| %>
+    <div class="mb-4">
+      <%= f.label :course_section_id, "Секція курсу", class: "block font-medium" %>
+      <%= f.collection_select :course_section_id, CourseSection.order(:position), :id, :title,
+            { prompt: "Оберіть секцію" },
+            class: "w-full border rounded px-3 py-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :title, "Назва матеріалу", class: "block font-medium" %>
+      <%= f.text_field :title, class: "w-full border rounded px-3 py-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :content, "Опис", class: "block font-medium" %>
+      <%= f.text_area :content, class: "w-full border rounded px-3 py-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :material_type, "Тип матеріалу", class: "block font-medium" %>
+      <%= f.select :material_type, CourseMaterial.material_types.keys.map { |type| [type.titleize, type] },
+            {}, class: "w-full border rounded px-3 py-2" %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :submittable, "Матеріал потребує здачі?", class: "block font-medium" %>
+      <%= f.check_box :submittable %>
+    </div>
+
+    <div class="mb-4">
+      <%= f.label :files, "Прикріпити файли", class: "block font-medium" %>
+      <%= f.file_field :files, multiple: true, class: "w-full" %>
+    </div>
+
+    <%= f.submit "Створити", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  <% end %>
+
+  <hr class="my-6">
+
+  <h2 class="text-lg font-semibold mb-2">Додати нову секцію до курсу</h2>
+
+  <%= form_with url: course_sections_path, method: :post, local: true do |f| %>
+    <%= hidden_field_tag :course_id, params[:id] %>
+
+    <div class="mb-3">
+      <%= f.label :title, "Назва секції", class: "block font-medium" %>
+      <%= f.text_field :title, class: "w-full border rounded px-3 py-2" %>
+    </div>
+
+    <%= f.submit "Створити секцію", class: "bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800" %>
+  <% end %>

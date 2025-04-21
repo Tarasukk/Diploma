@@ -1,0 +1,25 @@
+<div class="p-8 border border-gray-200 rounded-md">
+  fdfd
+
+  <div class="flex gap-14">
+    <div class="flex flex-col">
+      <h2 class="text-2xl font-semibold mb-4">Статус роботи</h2>
+      <%= render 'assigment_workflow' %>
+      <%= render 'feedback' %>
+    </div>
+    <%= render 'comments' %>
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("custom_file_input");
+    const fileNameSpan = document.getElementById("file-name");
+
+    input.addEventListener("change", () => {
+      const file = input.files[0];
+      fileNameSpan.textContent = file ? file.name : "Файл не вибрано";
+    });
+  });
+</script>

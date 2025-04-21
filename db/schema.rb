@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_13_074147) do
+ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,6 +51,39 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_13_074147) do
     t.index ["user_id"], name: "index_course_enrollments_on_user_id"
   end
 
+  create_table "course_material_submissions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "course_material_id", null: false
+    t.string "status"
+    t.boolean "evaluated"
+    t.datetime "submitted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_material_id"], name: "index_course_material_submissions_on_course_material_id"
+    t.index ["user_id"], name: "index_course_material_submissions_on_user_id"
+  end
+
+  create_table "course_materials", force: :cascade do |t|
+    t.string "title"
+    t.text "content"
+    t.string "material_type"
+    t.bigint "course_section_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "submittable"
+    t.datetime "deadline"
+    t.index ["course_section_id"], name: "index_course_materials_on_course_section_id"
+  end
+
+  create_table "course_sections", force: :cascade do |t|
+    t.string "title"
+    t.bigint "course_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_course_sections_on_course_id"
+  end
+
   create_table "courses", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -59,6 +92,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_13_074147) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_courses_on_teacher_id"
+  end
+
+  create_table "submission_comments", force: :cascade do |t|
+    t.bigint "course_material_submission_id", null: false
+    t.bigint "user_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_material_submission_id"], name: "index_submission_comments_on_course_material_submission_id"
+    t.index ["user_id"], name: "index_submission_comments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -82,5 +125,11 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_13_074147) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "course_enrollments", "courses"
   add_foreign_key "course_enrollments", "users"
+  add_foreign_key "course_material_submissions", "course_materials"
+  add_foreign_key "course_material_submissions", "users"
+  add_foreign_key "course_materials", "course_sections"
+  add_foreign_key "course_sections", "courses"
   add_foreign_key "courses", "users", column: "teacher_id"
+  add_foreign_key "submission_comments", "course_material_submissions"
+  add_foreign_key "submission_comments", "users"
 end
