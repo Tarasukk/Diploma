@@ -1,0 +1,12 @@
+<% if @file_info.present? %>
+  <%= form_with url: update_file_course_material_path(@course_material), method: :put, local: true, html: { multipart: true, class: 'mt-2 flex items-center gap-2' } do |f| %>
+    <div class="flex items-center gap-2 mt-4">
+      <label for="update_file_input" class="cursor-pointer inline-block bg-gray-200 text-gray-600 px-4 py-2 rounded hover:bg-gray-300">
+        🔁 Вибрати інший файл
+      </label>
+      <span id="update_file_name" class="text-sm text-gray-500">Файл не вибрано</span>
+      <%= file_field_tag :file, id: "update_file_input", class: "hidden", accept: ".pdf,.doc,.docx" %>
+    </div>
+    <%= f.submit "Оновити файл", class: "bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md text-sm font-medium mt-4" %>
+  <% end %>
+<% end %>

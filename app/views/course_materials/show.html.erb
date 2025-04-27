@@ -1,10 +1,9 @@
 <div class="p-8 border border-gray-200 rounded-md">
-  fdfd
-
   <div class="flex gap-14">
     <div class="flex flex-col">
       <h2 class="text-2xl font-semibold mb-4">Статус роботи</h2>
       <%= render 'assigment_workflow' %>
+      <%= render 'edit_file' %>
       <%= render 'feedback' %>
     </div>
     <%= render 'comments' %>
@@ -14,12 +13,33 @@
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+    function shortenFileName(fileName) {
+      const parts = fileName.split('.');
+      const ext = parts.length > 1 ? '.' + parts.pop() : '';
+      const base = parts.join('.');
+      return base.length > 5 ? base.slice(0, 5) + '...' + ext : fileName;
+    }
+
+    // #create
     const input = document.getElementById("custom_file_input");
     const fileNameSpan = document.getElementById("file-name");
 
-    input.addEventListener("change", () => {
-      const file = input.files[0];
-      fileNameSpan.textContent = file ? file.name : "Файл не вибрано";
-    });
+    if (input && fileNameSpan) {
+      input.addEventListener("change", () => {
+        const file = input.files[0];
+        fileNameSpan.textContent = file ? shortenFileName(file.name) : "Файл не вибрано";
+      });
+    }
+
+    // #update
+    const updateInput = document.getElementById("update_file_input");
+    const updateLabel = document.getElementById("update_file_name");
+
+    if (updateInput && updateLabel) {
+      updateInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        updateLabel.textContent = file ? shortenFileName(file.name) : "Файл не вибрано";
+      });
+    }
   });
 </script>

@@ -38,6 +38,7 @@ module CourseMaterialService
 
   def submission_file_info(student, course_material)
     submission = StudentService.get_student_submission(student, course_material)
+
     return nil unless submission&.file&.attached?
 
     {

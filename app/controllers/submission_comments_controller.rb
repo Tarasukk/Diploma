@@ -13,4 +13,17 @@ class SubmissionCommentsController < ApplicationController
 
     redirect_back fallback_location: root_path
   end
+
+  def destroy
+    comment = SubmissionComment.find(params[:id])
+
+    if comment.user == current_user
+      comment.destroy
+      flash[:notice] = 'Коментар видалено.'
+    else
+      flash[:alert] = 'Ви не можете видалити цей коментар.'
+    end
+
+    redirect_back fallback_location: root_path
+  end
 end

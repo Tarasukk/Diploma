@@ -42,13 +42,16 @@
         Завантаження файлу
       </th>
       <td class="px-4 py-3 text-blue-600 border border-gray-200">
-
         <% if @file_info.present? %>
-          <a href="<%= @file_info[:url] %>" class="hover:underline" target="_blank">
-            <%= @file_info[:filename] %>
-          </a>
-          <div class="text-xs text-gray-500">
-            <%= I18n.l(@file_info[:submitted_at], format: "%-d %B %Y, %H:%M") %>
+          <div class="flex justify-between">
+            <div>
+              <a href="<%= @file_info[:url] %>" class="hover:underline" target="_blank">
+                <%= @file_info[:filename] %>
+              </a>
+              <div class="text-xs text-gray-500">
+                <%= I18n.l(@file_info[:submitted_at], format: "%-d %B %Y, %H:%M") %>
+              </div>
+            </div>
           </div>
         <% else %>
           <%= form_with model: CourseMaterialSubmission.new, url: course_material_submissions_path, local: true, html: { multipart: true, class: 'inline-flex' } do |f| %>
@@ -58,14 +61,13 @@
               <label for="custom_file_input" class="cursor-pointer inline-block bg-gray-200 text-gray-600 px-4 py-2 rounded hover:bg-gray-300">
                 📁 Завантажте ваш файл
               </label>
-              <span id="file-name" class="text-sm text-gray-500">Файл не вибрано</span>
+              <span id="file-name" class="text-sm text-gray-500"></span>
               <%= f.file_field :file, id: "custom_file_input", class: "hidden", accept: ".pdf,.doc,.docx" %>
             </div>
 
             <%= f.submit 'Здати', class: 'inline-flex items-center px-4 py-2 ml-2 bg-blue-600 border border-transparent rounded-md font-semibold text-white hover:bg-blue-700 text-sm' %>
           <% end %>
         <% end %>
-
       </td>
     </tr>
 

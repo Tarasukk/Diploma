@@ -5,13 +5,15 @@ class CourseMaterialSubmissionsController < ApplicationController
 
     if @submission.file.attached?
       if @submission.save
-        redirect_back fallback_location: root_path, notice: 'Роботу успішно надіслано.'
+        flash[:notice] = 'Роботу успішно надіслано.'
       else
-        redirect_back fallback_location: root_path, alert: 'Помилка при збереженні файлу.'
+        flash[:alert] = 'Помилка при збереженні файлу.'
       end
     else
-      redirect_back fallback_location: root_path, alert: 'Файл не обрано.'
+      flash[:alert] = 'Файл не обрано.'
     end
+
+    redirect_back fallback_location: root_path
   end
 
   private

@@ -4,7 +4,7 @@
       <h2 class="text-lg font-semibold mb-3"><%= section.title %></h2>
 
       <% section.course_materials.each do |material| %>
-        <div class="flex items-center gap-3 bg-white border p-3 rounded-md shadow-sm mb-2 justify-between p-4 w-full">
+        <div class="flex items-center gap-3 bg-white border border-gray-200 p-3 rounded-md shadow-sm mb-2 justify-between p-4 w-full">
           <div class="flex items-center gap-3">
             <% if material.submittable? %>
               <%= image_tag "/images/attach.png", style: 'max-width: 40px' %>
@@ -19,7 +19,11 @@
             <div class="flex gap-2 ml-2">
               <p class="text-blue-600 font-medium">
                 <% if material.submittable? %>
-                  <%= link_to material.title, course_material_path(material) %>
+                  <% if current_user.admin? %>
+                    <%= link_to 'todo to all grades path', '#' %>
+                  <% else %>
+                    <%= link_to material.title, course_material_path(material) %>
+                  <% end %> 
                 <% else %>
                   <%= link_to material.title, url_for(material.files.first), target: "_blank" %>
                 <% end %>
@@ -33,9 +37,9 @@
           </div>
 
           <% if material.submittable? %>
-            <%= link_to "Нездано", "#", class: "px-3 py-1 border text-sm rounded ml-2" %>
+            <%= link_to "Нездано", "#", class: "px-3 py-1 border border-gray-200 text-sm rounded ml-2" %>
           <% else %>
-            <%= link_to "Нездано", "#", class: "px-3 py-1 border text-sm rounded ml-2" %>
+            <%= link_to "Нездано", "#", class: "px-3 py-1 border border-gray-200 text-sm rounded ml-2" %>
           <% end %>
         </div>
       <% end %>
