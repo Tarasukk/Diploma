@@ -24,7 +24,7 @@ proxy:
     - diploma-work.org
   app_port: 3000
   healthcheck:
-    path: /
+    path: /users/sign_in
 
 # Credentials for your image host.
 registry:
