@@ -49,7 +49,7 @@ Rails.application.configure do
   # config.assume_ssl = true
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Skip http-to-https redirect for the default health check endpoint.
   # config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
@@ -66,9 +66,9 @@ Rails.application.configure do
   # information to avoid inadvertent exposure of personally identifiable information (PII). If you
   # want to log everything, set the level to "debug".
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'info')
-  config.action_mailer.default_url_options = { host: 'host' }
-  Rails.application.routes.default_url_options[:host] = 'hotst'
 
+  config.action_mailer.default_url_options = { host: ENV['DOMAIN_NAME'], protocol: 'https' }
+  Rails.application.routes.default_url_options = { host: ENV['DOMAIN_NAME'], protocol: 'https' }
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
 
