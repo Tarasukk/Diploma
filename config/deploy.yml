@@ -18,8 +18,10 @@ servers:
 #
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption. 
 proxy: 
-  ssl: false
-  # host: printing-service.us
+  ssl: true
+  hosts:
+    - www.diploma-work.org
+    - diploma-work.org
   app_port: 3000
   healthcheck:
     path: /
