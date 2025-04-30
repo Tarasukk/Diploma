@@ -19,6 +19,8 @@ gem 'image_processing', '~> 1.2'
 gem 'font-awesome-rails'
 gem 'kamal', '2.3.0'
 gem 'thruster', '0.1.8'
+gem 'omniauth-rails_csrf_protection'
+
 
 group :development, :test do
   gem 'debug', platforms: %i[ mri windows ], require: 'debug/prelude'

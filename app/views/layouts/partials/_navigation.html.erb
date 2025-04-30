@@ -1,4 +1,4 @@
-<div class="bg-gray-50 border border-gray-200 rounded-md p-4 w-full max-w-xs text-sm" x-data="{ open: false }">
+<div class="bg-gray-50 border border-gray-200 rounded-md p-4 w-full max-w-xs text-sm">
   <h2 class="text-base font-semibold mb-3">Навігація</h2>
 
   <ul class="space-y-1">
@@ -10,18 +10,15 @@
         Особистий кабінет
       </a>
     </li>
-    <li class="font-semibold text-gray-900 cursor-pointer select-none" @click="open = !open">
+    <li class="font-semibold text-gray-900 select-none">
       Мої курси
-      <span class="ml-1 text-xs text-gray-500" x-text="open ? '▲' : '▼'"></span>
-    </li>
-    <template x-if="open">
-      <ul>
+      <ul class="mt-1 space-y-1">
         <% current_user.enrolled_courses.each do |course| %>
           <li class="ml-4">
-            <%= link_to "▸ #{course.title}", course_path(course), class: "text-blue-600 hover:underline" %>
+            - <%= link_to course.title, course_path(course), class: "text-blue-600 hover:underline" %>
           </li>
         <% end %>
       </ul>
-    </template>
+    </li>
   </ul>
 </div>
