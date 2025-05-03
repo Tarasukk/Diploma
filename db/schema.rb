@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_03_082559) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,11 +54,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
   create_table "course_material_submissions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "course_material_id", null: false
-    t.string "status"
+    t.string "status", default: "pending"
     t.boolean "evaluated"
     t.datetime "submitted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "grade"
     t.index ["course_material_id"], name: "index_course_material_submissions_on_course_material_id"
     t.index ["user_id"], name: "index_course_material_submissions_on_user_id"
   end
@@ -72,6 +73,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
     t.datetime "updated_at", null: false
     t.boolean "submittable"
     t.datetime "deadline"
+    t.integer "max_grade"
     t.index ["course_section_id"], name: "index_course_materials_on_course_section_id"
   end
 
@@ -92,6 +94,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_courses_on_teacher_id"
+  end
+
+  create_table "student_groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "submission_comments", force: :cascade do |t|
@@ -117,8 +125,10 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
     t.string "role"
     t.string "name"
     t.string "phone_number"
+    t.bigint "student_group_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["student_group_id"], name: "index_users_on_student_group_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
@@ -132,4 +142,5 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_20_120725) do
   add_foreign_key "courses", "users", column: "teacher_id"
   add_foreign_key "submission_comments", "course_material_submissions"
   add_foreign_key "submission_comments", "users"
+  add_foreign_key "users", "student_groups"
 end

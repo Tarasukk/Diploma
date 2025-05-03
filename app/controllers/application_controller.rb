@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
+
   layout :layout_by_resource
   before_action :authenticate_user!
 

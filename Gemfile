@@ -20,6 +20,8 @@ gem 'font-awesome-rails'
 gem 'kamal', '2.3.0'
 gem 'thruster', '0.1.8'
 gem 'omniauth-rails_csrf_protection'
+gem 'pagy'
+gem 'ransack'
 
 
 group :development, :test do

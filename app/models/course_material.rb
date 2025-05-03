@@ -15,4 +15,9 @@ class CourseMaterial < ApplicationRecord
   validates :course_section_id, presence: true
 
   delegate :course, to: :course_section
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[content course_section_id created_at deadline id material_type max_grade submittable title updated_at]
+  end
+
 end

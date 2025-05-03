@@ -6,9 +6,18 @@ class CourseMaterialSubmission < ApplicationRecord
   has_many :submission_comments, dependent: :destroy
 
   enum status: {
-    not_submitted: 'not_submitted',
-    submitted: 'submitted'
+    pending: 'pending',
+    graded: 'graded'
   }
 
   validates :user_id, :course_material_id, :file, presence: true
+
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[id status grade evaluated submitted_at created_at updated_at user_id course_material_id]
+  end
+
+  def self.ransackable_associations(_ = nil)
+    %w[user course_material course_material.course user.student_group]
+  end
 end

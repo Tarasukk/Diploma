@@ -53,7 +53,7 @@ class CourseMaterialsController < ApplicationController
     @submitted = CourseMaterialService.student_submit_assignment?(current_user, @course_material)
     @file_info = CourseMaterialService.submission_file_info(current_user, @course_material)
     @updated_at = CourseMaterialService.last_time_assignment_updated(current_user, @course_material)
-    @comments = StudentService.get_student_submission(current_user, @course_material).submission_comments
+    @comments = StudentService.get_student_submission(current_user, @course_material)&.submission_comments
   end
 
   private

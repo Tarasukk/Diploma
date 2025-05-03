@@ -27,4 +27,12 @@ Rails.application.routes.draw do
   resources :course_sections, only: %i[create]
   resources :course_material_submissions, only: %i[create]
   resources :submission_comments, only: %i[create destroy]
+
+  namespace :system do
+    resources :course_material_submissions, only: %i[index show] do
+      member do
+        post :grade
+      end
+    end
+  end
 end
