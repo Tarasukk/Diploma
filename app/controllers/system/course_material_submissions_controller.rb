@@ -15,6 +15,8 @@ module System
       submission = CourseMaterialSubmission.find(params[:id])
 
       submission.grade = params[:grade]
+      submission.graded_by_id = current_user.id
+      submission.graded_at = Time.now
 
       if submission.save
         submission.update(status: 'graded')

@@ -20,10 +20,10 @@
               <p class="text-blue-600 font-medium">
                 <% if material.submittable? %>
                   <% if current_user.admin? %>
-                    <%= link_to 'todo to all grades path', '#' %>
+                      <%= material.title %>
                   <% else %>
-                    <%= link_to material.title, course_material_path(material) %>
-                  <% end %> 
+                    <%= link_to material.title, course_material_path(material), class: "text-blue-600 underline hover:text-blue-800" %>
+                  <% end %>
                 <% else %>
                   <%= link_to material.title, url_for(material.files.first), target: "_blank" %>
                 <% end %>
@@ -36,69 +36,54 @@
             </div>
           </div>
 
-          <% if material.submittable? %>
-            <%= link_to "Нездано", "#", class: "px-3 py-1 border border-gray-200 text-sm rounded ml-2" %>
-          <% else %>
-            <%= link_to "Нездано", "#", class: "px-3 py-1 border border-gray-200 text-sm rounded ml-2" %>
+          <% if material.submittable? && !current_user.admin? %>
+            <% submission = StudentService.get_student_submission(current_user, material) %>
+
+            <% if submission&.graded? %>
+              <%= link_to "Оцінено", "#", class: "w-24 text-center px-3 py-1 text-sm rounded ml-2 bg-green-100 text-green-800 border border-green-300 cursor-default pointer-events-none" %>
+            <% elsif submission&.file&.attached? %>
+              <%= link_to "Здано", "#", class: "w-24 text-center px-3 py-1 text-sm rounded ml-2 bg-yellow-100 text-yellow-800 border border-yellow-300 cursor-default pointer-events-none" %>
+            <% else %>
+              <%= link_to "Нездано", "#", class: "w-24 text-center px-3 py-1 text-sm rounded ml-2 bg-red-100 text-red-800 border border-red-300 cursor-default pointer-events-none" %>
+            <% end %>
           <% end %>
         </div>
       <% end %>
     </div>
+    <hr class="border-t border-gray-200 my-4">
   <% end %>
 </div>
 
+<h1>Розклад для <%= @student_group.name %></h1>
 
-
-  <h1 class="text-xl font-semibold mb-4">Новий матеріал</h1>
-
-  <%= form_with model: @course_material, url: course_materials_path, local: true do |f| %>
-    <div class="mb-4">
-      <%= f.label :course_section_id, "Секція курсу", class: "block font-medium" %>
-      <%= f.collection_select :course_section_id, CourseSection.order(:position), :id, :title,
-            { prompt: "Оберіть секцію" },
-            class: "w-full border rounded px-3 py-2" %>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :title, "Назва матеріалу", class: "block font-medium" %>
-      <%= f.text_field :title, class: "w-full border rounded px-3 py-2" %>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :content, "Опис", class: "block font-medium" %>
-      <%= f.text_area :content, class: "w-full border rounded px-3 py-2" %>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :material_type, "Тип матеріалу", class: "block font-medium" %>
-      <%= f.select :material_type, CourseMaterial.material_types.keys.map { |type| [type.titleize, type] },
-            {}, class: "w-full border rounded px-3 py-2" %>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :submittable, "Матеріал потребує здачі?", class: "block font-medium" %>
-      <%= f.check_box :submittable %>
-    </div>
-
-    <div class="mb-4">
-      <%= f.label :files, "Прикріпити файли", class: "block font-medium" %>
-      <%= f.file_field :files, multiple: true, class: "w-full" %>
-    </div>
-
-    <%= f.submit "Створити", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
-  <% end %>
-
-  <hr class="my-6">
-
-  <h2 class="text-lg font-semibold mb-2">Додати нову секцію до курсу</h2>
-
-  <%= form_with url: course_sections_path, method: :post, local: true do |f| %>
-    <%= hidden_field_tag :course_id, params[:id] %>
-
-    <div class="mb-3">
-      <%= f.label :title, "Назва секції", class: "block font-medium" %>
-      <%= f.text_field :title, class: "w-full border rounded px-3 py-2" %>
-    </div>
-
-    <%= f.submit "Створити секцію", class: "bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800" %>
-  <% end %>
+<table class="calendar">
+  <thead>
+    <tr>
+      <% %w[Пн Вт Ср Чт Пт Сб Нд].each do |day| %>
+        <th><%= day %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% start_date = Date.new(2025, 4, 1) %>
+    <% end_date = start_date.end_of_month %>
+    <% (start_date..end_date).to_a.in_groups_of(7, nil).each do |week| %>
+      <tr>
+        <% week.each do |day| %>
+          <td style="vertical-align: top; height: 100px;">
+            <% if day %>
+              <strong><%= day.day %></strong><br/>
+              <% if @events[day] %>
+                <% @events[day].each do |event| %>
+                  <div>
+                    <%= event.title %> (<%= event.course.name %>)
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

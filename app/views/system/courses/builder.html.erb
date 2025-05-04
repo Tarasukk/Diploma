@@ -1,0 +1,96 @@
+<div class="p-8 border border-gray-200 rounded-md">
+  <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Конструктор курсу</h1>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="flex flex-col gap-8">
+      <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-md h-fit max-h-[500px]">
+        <h2 class="text-xl font-semibold mb-4 text-blue-700 border-b pb-2">🧑‍🏫 Створити курс</h2>
+        <%= form_with url: system_course_builder_create_course_path, scope: :course, local: true do |f| %>
+          <div class="mb-4">
+            <%= f.label :title, "Назва", class: "block font-medium mb-1" %>
+            <%= f.text_field :title, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :description, "Опис", class: "block font-medium mb-1" %>
+            <%= f.text_area :description, rows: 1, class: "w-full border border-gray-200 rounded px-3 py-2 resize-none" %>
+          </div>
+
+          <div class="mb-6">
+            <%= f.label :department, "Кафедра", class: "block font-medium mb-1" %>
+            <%= f.text_field :department, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <%= f.submit "Створити курс", class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded w-full" %>
+        <% end %>
+      </div>
+
+      <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-md h-fit max-h-[800px] overflow-auto">
+        <h2 class="text-xl font-semibold mb-4 text-purple-700 border-b pb-2">📄 Створити матеріал</h2>
+        <%= form_with url: system_course_builder_create_material_path, scope: :course_material, local: true, html: { multipart: true } do |f| %>
+          <div class="mb-4">
+            <%= f.label :title, "Назва", class: "block font-medium mb-1" %>
+            <%= f.text_field :title, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :course_section_id, "Секція", class: "block font-medium mb-1" %>
+            <%= f.select :course_section_id,
+              CourseSection.includes(:course).map { |s| ["#{s.course.title} (#{s.title})", s.id] },
+              { prompt: "Оберіть секцію" },
+              class: "w-full border border-gray-300 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :material_type, "Тип", class: "block font-medium mb-1" %>
+            <%= f.select :material_type, CourseMaterial.material_types.keys.map { |t| [t.titleize, t] }, {}, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4 flex items-center gap-2">
+            <%= f.check_box :submittable, class: "border-gray-200" %>
+            <%= f.label :submittable, "Дозволити здачу", class: "font-medium" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :max_grade, "Максимальний бал", class: "block font-medium mb-1" %>
+            <%= f.number_field :max_grade, min: 0, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :deadline, "Дедлайн", class: "block font-medium mb-1" %>
+            <%= f.date_field :deadline, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-6">
+            <%= f.label :files, "Файли", class: "block font-medium mb-1" %>
+            <%= f.file_field :files, multiple: true, class: "w-full" %>
+          </div>
+
+          <%= f.submit "Створити матеріал", class: "bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded w-full" %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-md h-fit max-h-[500px]">
+      <h2 class="text-xl font-semibold mb-4 text-green-700 border-b pb-2">📚 Створити секцію</h2>
+      <%= form_with url: system_course_builder_create_section_path, scope: :course_section, local: true do |f| %>
+        <div class="mb-4">
+          <%= f.label :title, "Назва", class: "block font-medium mb-1" %>
+          <%= f.text_field :title, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+        </div>
+
+        <div class="mb-4">
+          <%= f.label :course_id, "Курс", class: "block font-medium mb-1" %>
+          <%= f.collection_select :course_id, Course.all, :id, :title, { prompt: "Оберіть курс" }, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+        </div>
+
+        <div class="mb-6 mt-6">
+          <%= f.label :position, "Позиція", class: "block font-medium mb-1" %>
+          <%= f.number_field :position, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+        </div>
+
+        <%= f.submit "Створити секцію", class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full" %>
+      <% end %>
+    </div>
+  </div>
+</div>

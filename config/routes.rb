@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   root 'home#index'
 
   resources :courses, only: %i[index show]
-  resources :course_materials, only: %i[new create show] do
+  resources :course_materials, only: %i[show] do
     member do
       put :update_file
       delete :remove_file
@@ -34,5 +34,10 @@ Rails.application.routes.draw do
         post :grade
       end
     end
+
+    get 'course_builder', to: 'courses#builder'
+    post 'course_builder/create_course', to: 'courses#create_course'
+    post 'course_builder/create_section', to: 'courses#create_section'
+    post 'course_builder/create_material', to: 'courses#create_material'
   end
 end

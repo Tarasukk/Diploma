@@ -1,6 +1,7 @@
 class CourseMaterialSubmission < ApplicationRecord
   belongs_to :user
   belongs_to :course_material
+  belongs_to :graded_by, class_name: 'User', optional: true
 
   has_one_attached :file
   has_many :submission_comments, dependent: :destroy

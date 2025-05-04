@@ -15,7 +15,13 @@
         Статус оцінення
       </th>
       <td class="px-4 py-3 text-gray-900 border border-gray-200">
-        Оцінено #todo
+        <% if @student_submition&.grade.present? %>
+          Оцінено
+        <% elsif  @file_info.present? %>
+          Здано на оцінення
+        <% else %>
+          Не здано
+        <%end%>
       </td>
     </tr>
 
