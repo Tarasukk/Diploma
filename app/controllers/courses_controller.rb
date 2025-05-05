@@ -1,4 +1,6 @@
 class CoursesController < ApplicationController
+  before_action :assign_random_group_if_none, only: [:index]
+
   def index
     @enrolled_courses = current_user.enrolled_courses
     @available_courses = Course.where.not(id: @enrolled_courses.pluck(:id))
@@ -23,5 +25,14 @@ class CoursesController < ApplicationController
     end
 
     redirect_to courses_path
+  end
+
+  private
+
+  def assign_random_group_if_none
+    return if current_user.student_group.present?
+
+    random_group = StudentGroup.order("RANDOM()").first
+    current_user.update(student_group: random_group) if random_group
   end
 end

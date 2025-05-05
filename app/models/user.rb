@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :enrolled_courses, through: :course_enrollments, source: :course
   has_many :teaching_courses, class_name: 'Course', foreign_key: 'teacher_id'
   has_many :course_material_submissions, dependent: :destroy
+  has_many :schedule_events, dependent: :nullify
 
   belongs_to :student_group, optional: true
 

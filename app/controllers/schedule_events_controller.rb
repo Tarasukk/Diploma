@@ -22,6 +22,6 @@ class ScheduleEventsController < ApplicationController
   private
 
   def schedule_event_params
-    params.require(:schedule_event).permit(:title, :date, :student_group_id, :course_id)
+    params.require(:schedule_event).permit(:title, :date, :user_id)
   end
 end

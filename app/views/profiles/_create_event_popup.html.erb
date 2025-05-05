@@ -7,7 +7,7 @@
       <h2 class="text-xl font-semibold mb-4">Cтворення події</h2>
       <%= form_with url: schedule_events_path, method: :post, local: true do |f| %>
         <input type="hidden" name="schedule_event[date]" id="popup_date">
-        <input type="hidden" name="schedule_event[student_group_id]" value="<%= @student_group.id %>">
+        <input type="hidden" name="schedule_event[user_id]" value="<%= current_user.id %>">
         <div class="mb-4">
           <%= f.label :title, "Назва події", class: "block text-sm font-medium text-gray-700" %>
           <%= f.text_field :title, name: "schedule_event[title]",

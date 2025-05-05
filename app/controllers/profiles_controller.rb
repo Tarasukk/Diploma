@@ -8,9 +8,15 @@ class ProfilesController < ApplicationController
     start_date = @current_month.beginning_of_month.beginning_of_week(:monday)
     end_date = @current_month.end_of_month.end_of_week(:monday)
 
-    @events = @student_group.schedule_events
-      .where(date: start_date..end_date)
-      .includes(:course)
-      .group_by(&:date)
+    @events = ScheduleEvent
+    .where(date: start_date..end_date)
+    .where(
+      ScheduleEvent.arel_table[:student_group_id].eq(current_user.student_group_id)
+      .or(ScheduleEvent.arel_table[:course_id].in(current_user.enrolled_courses.select(:id)))
+      .or(ScheduleEvent.arel_table[:user_id].eq(current_user.id))
+    )
+    .includes(:course)
+    .group_by(&:date)
+  
   end
 end
