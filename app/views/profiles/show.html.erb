@@ -1,0 +1,95 @@
+<div class="p-8 border border-gray-200 rounded-md">
+  <div class="flex items-center justify-center mt-20" class="calendar-controls" style="margin-bottom: 1rem;">
+    <% prev_month = @current_month.prev_month %>
+    <% next_month = @current_month.next_month %>
+
+    <%= link_to "◀ #{l(prev_month, format: '%B')}", profile_path(month: prev_month.strftime('%Y-%m-01')) %>
+    <strong class="text-2xl" style="margin: 0 1rem;"><%= l(@current_month, format: '%B %Y') %></strong>
+    <%= link_to "#{l(next_month, format: '%B')} ▶", profile_path(month: next_month.strftime('%Y-%m-01')) %>
+  </div>
+
+  <table class="calendar mb-20" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+    <thead>
+      <tr>
+        <% %w[Пн Вт Ср Чт Пт Сб Нд].each do |day| %>
+          <th style="border: 1px solid #ccc; padding: 8px; text-align: center; background: #f9f9f9;"><%= day %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% start_date = @current_month.beginning_of_month.beginning_of_week(:monday) %>
+      <% end_date = @current_month.end_of_month.end_of_week(:monday) %>
+      <% (start_date..end_date).to_a.in_groups_of(7).each do |week| %>
+        <tr>
+          <% week.each do |day| %>
+            <td style="border: 1px solid #ccc; vertical-align: top; height: 100px; padding: 5px; background: <%= day.month == @current_month.month ? '#fff' : '#f0f0f0' %>;" data-calendar-day="<%= day %>">
+              <div class="<%= day == Date.current ? 'w-7 h-7 flex items-center justify-center font-bold rounded-full border-2 border-blue-500' : 'font-bold' %> mb-1">
+                <%= day.day %>
+              </div>
+              <% if @events[day] %>
+                <% @events[day].each do |event| %>
+                  <div style="position: relative; background: #d0ebff; border-radius: 4px; padding: 2px 4px; margin-bottom: 2px; font-size: 0.9em; max-width: 140px; word-wrap: break-word; overflow-wrap: anywhere;"
+                    onmouseover="this.querySelector('.delete-btn').style.display = 'inline';"
+                    onmouseout="this.querySelector('.delete-btn').style.display = 'none';">
+
+                    <p class="mr-3"><%= "#{event.course.title}: " if event.course.present? %><%= event.title %></p>
+
+                    <%= button_to schedule_event_path(event), method: :delete,
+                          form: { style: 'display:inline; position:absolute; top:2px; right:4px;' },
+                          data: { turbo_confirm: 'Ви впевнені, що хочете видалити подію?' },
+                          class: 'delete-btn',
+                          style: 'display: none; background: transparent; border: none; color: #444; font-weight: bold; font-size: 0.9em; cursor: pointer;' do %>
+                      ×
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div id="popup" class="fixed inset-0 z-50 hidden">
+  <div class="absolute inset-0 bg-black/50"></div>
+  <div class="absolute inset-0 flex items-center justify-center">
+    <div class="relative bg-white rounded-lg shadow-xl p-6 w-full max-w-md z-10">
+      <button onclick="closePopup()"
+              class="absolute top-2 right-3 text-gray-500 hover:text-red-500 text-2xl font-bold leading-none">&times;</button>
+      <h2 class="text-xl font-semibold mb-4">Cтворення події</h2>
+      <%= form_with url: schedule_events_path, method: :post, local: true do |f| %>
+        <input type="hidden" name="schedule_event[date]" id="popup_date">
+        <input type="hidden" name="schedule_event[student_group_id]" value="<%= @student_group.id %>">
+        <div class="mb-4">
+          <%= f.label :title, "Назва події", class: "block text-sm font-medium text-gray-700" %>
+          <%= f.text_field :title, name: "schedule_event[title]",
+              class: "mt-1 block w-full rounded-md border border-gray-300 shadow-sm px-3 py-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %>
+        </div>
+        <div class="flex justify-end space-x-2">
+          <%= f.submit "Створити", class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openPopup(date) {
+    document.getElementById('popup_date').value = date;
+    document.getElementById('popup').style.display = 'block';
+  }
+
+  function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[data-calendar-day]').forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        openPopup(this.dataset.calendarDay);
+      });
+    });
+  });
+</script>

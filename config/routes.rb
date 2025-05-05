@@ -17,7 +17,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'home#index'
 
+  resource :profile, only: %i[show]
   resources :courses, only: %i[index show]
+  resources :schedule_events, only: %i[create destroy]
   resources :course_materials, only: %i[show] do
     member do
       put :update_file
