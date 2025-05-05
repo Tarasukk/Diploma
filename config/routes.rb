@@ -15,10 +15,14 @@ Rails.application.routes.draw do
   get 'manifest' => 'rails/pwa#manifest', as: :pwa_manifest
 
   # Defines the root path route ("/")
-  root 'home#index'
+  root 'courses#index'
 
   resource :profile, only: %i[show]
-  resources :courses, only: %i[index show]
+  resources :courses, only: %i[index show] do
+    member do
+      post :enroll
+    end
+  end
   resources :schedule_events, only: %i[create destroy]
   resources :course_materials, only: %i[show] do
     member do

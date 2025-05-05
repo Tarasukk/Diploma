@@ -1,0 +1,22 @@
+<div class="w-full md:w-1/2 border border-gray-200 p-6 rounded-lg">
+  <h3 class="text-xl font-semibold mb-4">Мої курси</h3>
+
+  <% if current_user.enrolled_courses.any? %>
+    <ul class="space-y-2">
+      <% current_user.enrolled_courses.each do |course| %>
+        <%= link_to course_path(course), class: "block" do %>
+          <li class="border border-gray-200 rounded p-3 hover:bg-gray-100 transition duration-150">
+            <div class="text-lg font-medium text-gray-900">
+              <%= course.title %>
+            </div>
+            <div class="text-sm text-gray-600">
+              <strong>Кафедра:</strong> <%= course.department %>
+            </div>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500">Ви ще не записані на жоден курс.</p>
+  <% end %>
+</div>

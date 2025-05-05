@@ -1,0 +1,79 @@
+<div class="flex items-center justify-center calendar-controls" style="margin-bottom: 1rem;">
+  <% prev_month = @current_month.prev_month %>
+  <% next_month = @current_month.next_month %>
+
+  <%= link_to "◀ #{l(prev_month, format: '%B')}", profile_path(month: prev_month.strftime('%Y-%m-01')) %>
+  <strong class="text-2xl mx-4"><%= l(@current_month, format: '%B %Y') %></strong>
+  <%= link_to "#{l(next_month, format: '%B')} ▶", profile_path(month: next_month.strftime('%Y-%m-01')) %>
+</div>
+<table class="calendar mb-20" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+  <thead>
+    <tr>
+      <% %w[Пн Вт Ср Чт Пт Сб Нд].each do |day| %>
+        <th style="border: 1px solid #ccc; padding: 8px; text-align: center; background: #f9f9f9;"><%= day %></th>
+      <% end %>
+    </tr>
+  </thead>
+  <tbody>
+    <% start_date = @current_month.beginning_of_month.beginning_of_week(:monday) %>
+    <% end_date = @current_month.end_of_month.end_of_week(:monday) %>
+    <% (start_date..end_date).to_a.in_groups_of(7).each do |week| %>
+      <tr>
+        <% week.each do |day| %>
+          <% bg_class = day.month == @current_month.month ? 'bg-white' : 'bg-gray-300' %>
+          <td
+            class="transition cursor-pointer hover:bg-gray-200 <%= bg_class %>"
+            style="border: 1px solid #ccc; vertical-align: top; height: 100px; padding: 5px;"
+            data-calendar-day="<%= day %>"
+          >
+            <div class="<%= day == Date.current ? 'w-7 h-7 flex items-center justify-center font-bold rounded-full border-2 border-blue-500' : 'font-bold' %> mb-1">
+              <%= day.day %>
+            </div>
+            <% if @events[day] %>
+              <% @events[day].each do |event| %>
+                <div
+                  style="position: relative; background: #d0ebff; border-radius: 4px; padding: 2px 4px; margin-bottom: 2px; font-size: 0.9em; max-width: 140px; word-wrap: break-word; overflow-wrap: anywhere;"
+                  onmouseover="this.querySelector('.delete-btn').style.display = 'inline';"
+                  onmouseout="this.querySelector('.delete-btn').style.display = 'none';"
+                >
+                  <p class="mr-3">
+                    <%= "#{event.course.title}: " if event.course.present? %><%= event.title %>
+                  </p>
+
+                  <%= button_to schedule_event_path(event),
+                    method: :delete,
+                    form: { style: 'display:inline; position:absolute; top:2px; right:4px;' },
+                    data: { turbo_confirm: 'Ви впевнені, що хочете видалити подію?' },
+                    class: 'delete-btn',
+                   style: 'display: none; background: transparent; border: none; color: #444; font-weight: bold; font-size: 0.9em; cursor: pointer;' do %>
+                    ×
+                  <% end %>
+                </div>
+              <% end %>
+            <% end %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<script>
+  function openPopup(date) {
+    document.getElementById('popup_date').value = date;
+    document.getElementById('popup').style.display = 'block';
+  }
+
+  function closePopup() {
+    document.getElementById('popup').style.display = 'none';
+  }
+
+  document.addEventListener('turbo:load', function() {
+    document.querySelectorAll('[data-calendar-day]').forEach(function(cell) {
+      cell.addEventListener('click', function() {
+        openPopup(this.dataset.calendarDay);
+      });
+    });
+  });
+</script>

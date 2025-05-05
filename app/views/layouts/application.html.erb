@@ -28,8 +28,20 @@
         <div class="flex gap-6 w-full">
           <%= render 'layouts/partials/navigation' %>
           <div class="w-full">
-            <p class="notice"><%= notice %></p>
-            <p class="alert"><%= alert %></p>
+            <div id="flash-toast" class=" mt-36 fixed top-4 right-4 z-50 space-y-3 w-[300px]">
+              <% if notice %>
+                <div class="toast flex items-start gap-3 bg-green-50 text-green-900 border-l-4 border-green-500 px-4 py-3 rounded-lg shadow-lg transition-opacity duration-300">
+                  <div class="text-xl">✅</div>
+                  <div class="text-sm font-medium leading-snug"><%= notice %></div>
+                </div>
+              <% end %>
+              <% if alert %>
+                <div class="toast flex items-start gap-3 bg-red-50 text-red-900 border-l-4 border-red-500 px-4 py-3 rounded-lg shadow-lg transition-opacity duration-300">
+                  <div class="text-xl">⛔</div>
+                  <div class="text-sm font-medium leading-snug"><%= alert %></div>
+                </div>
+              <% end %>
+            </div>
             <%= yield %>
           </div>
         </div>
@@ -38,3 +50,15 @@
     <%= render 'layouts/partials/footer' %>
   </body>
 </html>
+
+<script>
+  document.addEventListener('turbo:load', function () {
+    const toasts = document.querySelectorAll('#flash-toast .toast');
+    toasts.forEach((toast) => {
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    });
+  });
+</script>

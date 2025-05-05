@@ -1,6 +1,7 @@
 class CoursesController < ApplicationController
   def index
-    @courses = current_user.enrolled_courses
+    @enrolled_courses = current_user.enrolled_courses
+    @available_courses = Course.where.not(id: @enrolled_courses.pluck(:id))
   end
 
   def show
@@ -10,5 +11,17 @@ class CoursesController < ApplicationController
     unless current_user.enrolled_courses.include?(@course) || current_user.teaching_courses.include?(@course)
       redirect_to courses_path, alert: 'Ви не маєте доступу до цього курсу.'
     end
+  end
+
+  def enroll
+    course = Course.find(params[:id])
+    unless current_user.enrolled_courses.include?(course)
+      current_user.enrolled_courses << course
+      flash[:notice] = 'Ви успішно записалися на курс.'
+    else
+      flash[:alert] = 'Ви вже записані на цей курс.'
+    end
+
+    redirect_to courses_path
   end
 end
