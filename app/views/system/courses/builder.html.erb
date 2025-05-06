@@ -71,26 +71,61 @@
       </div>
     </div>
 
-    <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-md h-fit max-h-[500px]">
-      <h2 class="text-xl font-semibold mb-4 text-green-700 border-b pb-2">📚 Створити секцію</h2>
-      <%= form_with url: system_course_builder_create_section_path, scope: :course_section, local: true do |f| %>
-        <div class="mb-4">
-          <%= f.label :title, "Назва", class: "block font-medium mb-1" %>
-          <%= f.text_field :title, class: "w-full border border-gray-200 rounded px-3 py-2" %>
-        </div>
+    <div class="flex flex-col gap-8">
+      <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-md h-fit max-h-[500px]">
+        <h2 class="text-xl font-semibold mb-4 text-green-700 border-b pb-2">📚 Створити секцію</h2>
+        <%= form_with url: system_course_builder_create_section_path, scope: :course_section, local: true do |f| %>
+          <div class="mb-4">
+            <%= f.label :title, "Назва", class: "block font-medium mb-1" %>
+            <%= f.text_field :title, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
 
-        <div class="mb-4">
-          <%= f.label :course_id, "Курс", class: "block font-medium mb-1" %>
-          <%= f.collection_select :course_id, Course.all, :id, :title, { prompt: "Оберіть курс" }, class: "w-full border border-gray-200 rounded px-3 py-2" %>
-        </div>
+          <div class="mb-4">
+            <%= f.label :course_id, "Курс", class: "block font-medium mb-1" %>
+            <%= f.collection_select :course_id, Course.all, :id, :title, { prompt: "Оберіть курс" }, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
 
-        <div class="mb-6 mt-6">
-          <%= f.label :position, "Позиція", class: "block font-medium mb-1" %>
-          <%= f.number_field :position, class: "w-full border border-gray-200 rounded px-3 py-2" %>
-        </div>
+          <div class="mb-6 mt-6">
+            <%= f.label :position, "Позиція", class: "block font-medium mb-1" %>
+            <%= f.number_field :position, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
 
-        <%= f.submit "Створити секцію", class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full" %>
-      <% end %>
+          <%= f.submit "Створити секцію", class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded w-full" %>
+        <% end %>
+      </div>
+      <div class="bg-white p-6 border border-gray-200 rounded-xl shadow-md h-fit max-h-[500px]">
+        <h2 class="text-xl font-semibold mb-4 text-orange-700 border-b pb-2">📆 Створити подію</h2>
+
+        <%= form_with url: system_course_builder_create_event_path, scope: :schedule_event, local: true do |f| %>
+          <div class="mb-4">
+            <%= f.label :title, "Назва", class: "block font-medium mb-1" %>
+            <%= f.text_field :title, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :date, "Дата", class: "block font-medium mb-1" %>
+            <%= f.date_field :date, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :student_group_id, "Група", class: "block font-medium mb-1" %>
+            <%= f.collection_select :student_group_id, StudentGroup.all, :id, :name,
+                { prompt: "Оберіть групу" },
+                class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :course_id, "Курс", class: "block font-medium mb-1" %>
+            <%= f.collection_select :course_id, Course.all, :id, :title,
+                { prompt: "Оберіть курс" },
+                class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <%= f.hidden_field :user_id, value: current_user.id %>
+
+          <%= f.submit "Створити подію", class: "bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded w-full" %>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>

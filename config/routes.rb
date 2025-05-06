@@ -45,5 +45,6 @@ Rails.application.routes.draw do
     post 'course_builder/create_course', to: 'courses#create_course'
     post 'course_builder/create_section', to: 'courses#create_section'
     post 'course_builder/create_material', to: 'courses#create_material'
+    post 'course_builder/create_event', to: 'courses#create_event'
   end
 end

@@ -41,10 +41,26 @@ module System
       redirect_back fallback_location: root_path
     end
 
+    def create_event
+      event = ScheduleEvent.new(schedule_event_params)
+
+      if event.save
+        flash[:notice] = 'Подію успішно створено.'
+      else
+        flash[:alert] = event.errors.full_messages.join(', ')
+      end
+
+      redirect_back fallback_location: root_path
+    end
+
     private
 
     def course_params
       params.require(:course).permit(:title, :description, :department)
+    end
+
+    def schedule_event_params
+      params.require(:schedule_event).permit(:title, :date, :student_group_id, :course_id, :user_id)
     end
 
     def section_params
