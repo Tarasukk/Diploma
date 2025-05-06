@@ -9,7 +9,7 @@
             <% if material.submittable? %>
               <%= image_tag "/images/attach.png", style: 'max-width: 40px' %>
             <% else %>
-              <% if material.files.first.content_type == "application/pdf" %>
+              <% if material&.files&.first.content_type == "application/pdf" %>
                 <%= image_tag "/images/pdf.png", style: 'max-width: 40px' %>
               <% else %>
                 <%= image_tag "/images/docs.png", style: 'max-width: 40px' %>
