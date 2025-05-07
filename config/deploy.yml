@@ -8,10 +8,10 @@ image: tarasuk/diploma
 servers:
   web:
     - 207.154.209.103
-  # job:
-  #   hosts:
-  #     - 146.190.45.40
-  #   cmd: bundle exec sidekiq
+  job:
+    hosts:
+      - 207.154.209.103
+    cmd: bundle exec sidekiq
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
 # Remove this section when using multiple web servers and ensure you terminate SSL at your load balancer.
