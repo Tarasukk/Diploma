@@ -77,7 +77,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "diploma_production"
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.smtp_settings = {
     address: ENV['SMTP_ADDRESS'],
     port: 587,
