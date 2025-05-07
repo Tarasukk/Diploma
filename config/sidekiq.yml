@@ -1,0 +1,16 @@
+development:
+  :concurrency: 5
+production:
+  :concurrency: 5
+:max_retries: 3  
+:queues:
+  - default
+  - mailers
+  - scheduler
+
+:scheduler:
+  :schedule:
+    send_event_notification_worker:
+      cron: '0 12 * * *'
+      class: SendEventNotificationWorker
+      queue: :scheduler

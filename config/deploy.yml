@@ -53,6 +53,10 @@ env:
     - DOMAIN_NAME
     - GOOGLE_CLIENT_ID
     - GOOGLE_CLIENT_SECRET
+    - SMTP_PASSWORD
+    - SMTP_USERNAME
+    - MAILER_DOMAIN
+    - SMTP_ADDRESS
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal logs -r job" will tail logs from the first server in the job section.

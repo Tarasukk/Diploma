@@ -1,0 +1,24 @@
+<div style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 24px; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+
+    <h1 style="color: #ff7a00;">Привіт, <%= @user.name || @user.email %>! 👋</h1>
+
+    <p style="font-size: 16px;">Ось твій розклад на <strong><%= Date.tomorrow.strftime("%d.%m.%Y") %></strong>:</p>
+
+    <ul style="list-style: none; padding-left: 0;">
+      <% @events.each do |event| %>
+        <li style="margin-bottom: 16px; padding: 12px; background-color: #fff5e6; border-left: 4px solid #ffa726; border-radius: 4px;">
+          <div style="font-size: 16px;"><strong><%= event.title %></strong></div>
+          <% if event.course %>
+            <div style="font-size: 14px;">Курс: <%= event.course.title %></div>
+          <% end %>
+          <% if event.student_group %>
+            <div style="font-size: 14px;">Група: <%= event.student_group.name %></div>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+
+    <p style="font-size: 16px;">📬 Не забудь підготуватись — гарного дня!</p>
+  </div>
+</div>

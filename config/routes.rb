@@ -1,4 +1,11 @@
+require 'sidekiq/web'
+require 'sidekiq-scheduler/web' 
+
 Rails.application.routes.draw do
+  constraints -> (req) { req.env['warden'].authenticate? && req.env['warden'].user.admin? } do
+    mount Sidekiq::Web => '/system/sidekiq'
+  end
+
   devise_for :users, controllers: {
     omniauth_callbacks: 'users/omniauth_callbacks',
     registrations: 'users/registrations'
