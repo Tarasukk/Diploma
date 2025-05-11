@@ -7,4 +7,5 @@ class Course < ApplicationRecord
   has_many :schedule_events
 
   has_one_attached :preview_file
+  has_one_attached :avatar
 end

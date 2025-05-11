@@ -1,0 +1,32 @@
+<div class="p-8">
+  <%= render "header" %>
+
+  <div class="mb-6">
+    <h2 class="text-xl font-semibold mb-2 text-gray-800">Викладач</h2>
+    <div class="p-4 bg-blue-50 rounded border border-blue-200">
+      <p class="font-medium text-blue-800"><%= @course.teacher&.name %></p>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-xl font-semibold mb-4 text-gray-800">Студенти (<%= @course.students.count %>)</h2>
+
+    <% if @course.students.any? %>
+      <ul class="space-y-4">
+        <% @course.students.each do |student| %>
+          <li class="flex items-center gap-4">
+            <div class="flex items-center justify-center h-9 w-9 rounded-full bg-gray-200 text-gray-600 font-bold text-sm">
+              <%= (student.name.presence || student.email).to_s.first.upcase %>
+            </div>
+            <div class="text-gray-800 font-medium">
+              <%= student.name.presence || student.email %>
+            </div>
+          </li>
+          <hr class="border-t border-gray-200">
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500">Наразі немає записаних студентів.</p>
+    <% end %>
+  </div>
+</div>

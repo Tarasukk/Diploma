@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   resources :courses, only: %i[index show] do
     member do
       post :enroll
+      get :enrolled_students
     end
   end
   resources :schedule_events, only: %i[create destroy]

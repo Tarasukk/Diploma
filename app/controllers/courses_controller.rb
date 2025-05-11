@@ -15,6 +15,11 @@ class CoursesController < ApplicationController
     end
   end
 
+  def enrolled_students
+    @course = Course.find(params[:id])
+    @students = @course.students
+  end
+
   def enroll
     course = Course.find(params[:id])
     unless current_user.enrolled_courses.include?(course)

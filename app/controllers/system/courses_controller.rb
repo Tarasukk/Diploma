@@ -56,7 +56,7 @@ module System
     private
 
     def course_params
-      params.require(:course).permit(:title, :description, :department)
+      params.require(:course).permit(:avatar, :title, :description, :department)
     end
 
     def schedule_event_params
