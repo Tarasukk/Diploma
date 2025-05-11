@@ -1,25 +1,31 @@
 <div class="w-full md:w-1/2 max-w-xl bg-white rounded-lg border border-gray-200 p-6">
   <h2 class="text-2xl font-semibold mb-4">Профіль користувача</h2>
 
-  <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-sm">
-    <dt class="font-medium text-gray-700">Email:</dt>
-    <dd class="text-gray-900">
-      <%= current_user.email %>
-    </dd>
+  <%= form_with model: current_user, url: profile_path, method: :patch, local: true do |f| %>
+    <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3 text-sm">
+      <dt class="font-medium text-gray-700">Email:</dt>
+      <dd class="text-gray-900">
+        <%= f.email_field :email, class: "w-full border-gray-300 p-2 rounded" %>
+      </dd>
 
-    <dt class="font-medium text-gray-700">Ім’я:</dt>
-    <dd class="text-gray-900">
-      <%= current_user.name.presence || '—' %>
-    </dd>
+      <dt class="font-medium text-gray-700">Ім’я:</dt>
+      <dd class="text-gray-900">
+        <%= f.text_field :name, class: "w-full border-gray-300 p-2 rounded" %>
+      </dd>
 
-    <dt class="font-medium text-gray-700">Телефон:</dt>
-    <dd class="text-gray-900">
-      <%= current_user.phone_number.presence || '—' %>
-    </dd>
+      <dt class="font-medium text-gray-700">Телефон:</dt>
+      <dd class="text-gray-900">
+        <%= f.telephone_field :phone_number, class: "w-full p-2 border-gray-300 rounded" %>
+      </dd>
 
-    <dt class="font-medium text-gray-700">Група:</dt>
-    <dd class="text-gray-900">
-      <%= current_user.student_group&.name || '—' %>
-    </dd>
-  </dl>
+      <dt class="font-medium text-gray-700">Група:</dt>
+      <dd class="text-gray-900 p-2">
+        <%= current_user.student_group&.name || '—' %>
+      </dd>
+    </dl>
+
+    <div class="mt-6">
+      <%= f.submit "Зберегти", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+    </div>
+  <% end %>
 </div>

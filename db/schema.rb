@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_05_144524) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_11_161823) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -107,7 +107,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_05_144524) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.bigint "course_material_id"
     t.index ["course_id"], name: "index_schedule_events_on_course_id"
+    t.index ["course_material_id"], name: "index_schedule_events_on_course_material_id"
     t.index ["student_group_id"], name: "index_schedule_events_on_student_group_id"
     t.index ["user_id"], name: "index_schedule_events_on_user_id"
   end
@@ -157,6 +159,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_05_144524) do
   add_foreign_key "course_materials", "course_sections"
   add_foreign_key "course_sections", "courses"
   add_foreign_key "courses", "users", column: "teacher_id"
+  add_foreign_key "schedule_events", "course_materials"
   add_foreign_key "schedule_events", "courses"
   add_foreign_key "schedule_events", "student_groups"
   add_foreign_key "schedule_events", "users"

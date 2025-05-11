@@ -24,6 +24,8 @@ class CoursesController < ApplicationController
     course = Course.find(params[:id])
     unless current_user.enrolled_courses.include?(course)
       current_user.enrolled_courses << course
+
+      StudentService.create_remainder_for_course_materials(current_user, course)
       flash[:notice] = 'Ви успішно записалися на курс.'
     else
       flash[:alert] = 'Ви вже записані на цей курс.'

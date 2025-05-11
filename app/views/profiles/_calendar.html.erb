@@ -32,7 +32,7 @@
             <% if @events[day] %>
               <% @events[day].each do |event| %>
                 <div
-                  style="position: relative; background: #d0ebff; border-radius: 4px; padding: 2px 4px; margin-bottom: 2px; font-size: 0.9em; max-width: 140px; word-wrap: break-word; overflow-wrap: anywhere;"
+                  style="position: relative; background: <%= event.course_material_id.present? ? '#fff3bf' : '#d0ebff' %>; border-radius: 4px; padding: 2px 4px; margin-bottom: 2px; font-size: 0.9em; max-width: 140px; word-wrap: break-word; overflow-wrap: anywhere;"
                   onmouseover="this.querySelector('.delete-btn').style.display = 'inline';"
                   onmouseout="this.querySelector('.delete-btn').style.display = 'none';"
                 >

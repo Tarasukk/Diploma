@@ -5,6 +5,7 @@ class CourseMaterialSubmissionsController < ApplicationController
 
     if @submission.file.attached?
       if @submission.save
+        destroy_event
         flash[:notice] = 'Роботу успішно надіслано.'
       else
         flash[:alert] = 'Помилка при збереженні файлу.'
@@ -17,6 +18,13 @@ class CourseMaterialSubmissionsController < ApplicationController
   end
 
   private
+
+  def destroy_event
+    ScheduleEvent.where(
+      user_id: current_user.id,
+      course_material_id: @submission.course_material_id
+    ).destroy_all
+  end
 
   def submission_params
     params.require(:course_material_submission).permit(:file, :course_material_id)

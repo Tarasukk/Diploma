@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'courses#index'
 
-  resource :profile, only: %i[show]
+  resource :profile, only: %i[show update]
   resources :courses, only: %i[index show] do
     member do
       post :enroll
