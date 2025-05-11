@@ -17,7 +17,7 @@ class CoursesController < ApplicationController
 
   def enrolled_students
     @course = Course.find(params[:id])
-    @students = @course.students
+    @same_group_students = @course.students.where(student_group_id: current_user.student_group_id)
   end
 
   def enroll

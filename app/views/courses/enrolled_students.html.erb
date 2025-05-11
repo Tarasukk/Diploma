@@ -9,11 +9,10 @@
   </div>
 
   <div>
-    <h2 class="text-xl font-semibold mb-4 text-gray-800">Студенти (<%= @course.students.count %>)</h2>
-
-    <% if @course.students.any? %>
+    <% if @same_group_students.any? %>
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">Студенти (<%= @same_group_students.count %>)</h2>
       <ul class="space-y-4">
-        <% @course.students.each do |student| %>
+        <% @same_group_students.each do |student| %>
           <li class="flex items-center gap-4">
             <div class="flex items-center justify-center h-9 w-9 rounded-full bg-gray-200 text-gray-600 font-bold text-sm">
               <%= (student.name.presence || student.email).to_s.first.upcase %>
@@ -26,7 +25,7 @@
         <% end %>
       </ul>
     <% else %>
-      <p class="text-gray-500">Наразі немає записаних студентів.</p>
+      <p class="text-gray-500">Немає студентів з вашої групи.</p>
     <% end %>
   </div>
 </div>
