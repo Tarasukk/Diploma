@@ -1,7 +1,11 @@
 <header class="flex justify-between px-7 py-3 bg-white border border-gray-300">
   <div class="flex items-center space-x-3">
-    <%= image_tag "/images/logo.png", alt: "Logo", class: "h-10 w-10" %>
-    <span class="text-lg text-gray-500">Diploma</span>
+    <%= link_to root_path do %>
+      <%= image_tag "/images/logo.png", alt: "Logo", class: "h-10 w-10" %>
+    <% end %>
+    <%= link_to root_path do %>
+      <span class="text-lg text-gray-500">Diploma</span>
+    <% end %>
   </div>
 
   <div class="flex items-center space-x-2">

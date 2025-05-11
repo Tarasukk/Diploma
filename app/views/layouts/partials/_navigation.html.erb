@@ -1,24 +1,63 @@
-<div class="bg-gray-50 border border-gray-200 rounded-md p-4 w-full max-w-xs text-sm">
-  <h2 class="text-base font-semibold mb-3">Навігація</h2>
 
+<% color_classes = %w[
+  bg-red-500 bg-green-600 bg-blue-500 bg-yellow-500 bg-pink-500
+  bg-purple-600 bg-indigo-500 bg-teal-500 bg-orange-500 bg-rose-600
+] %>
+
+<div class="border-r border-gray-200 w-full max-w-xs text-sm pt-4 px-2">
   <ul class="space-y-1">
     <li>
-      <a href="#" class="text-blue-600 hover:underline">На головну</a>
+      <%= link_to root_path, class: "flex items-center gap-2 px-4 py-2 rounded-r-full #{'bg-blue-100 text-blue-900' if current_page?(root_path)} hover:bg-gray-100" do %>
+        <span class="text-xl">🏠</span>
+        <span>Головна</span>
+      <% end %>
+    </li>
+
+    <li>
+      <%= link_to profile_path, class: "flex items-center gap-2 px-4 py-2 rounded-r-full #{'bg-blue-100 text-blue-900' if current_page?(profile_path)} hover:bg-gray-100" do %>
+        <span class="text-xl">📅</span>
+        <span>Профіль</span>
+      <% end %>
+    </li>
+
+    <hr class="border-t border-gray-200 my-4">
+
+    <li>
+      <div class="flex items-center justify-between gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full font-medium text-gray-800">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🎓</span>
+          <span>Курси</span>
+        </div>
+        <span class="text-gray-500 text-xl">▾</span>
+      </div>
+    </li>
+
+    <% current_user.enrolled_courses.each do |course| %>
+      <% color = color_classes[course.title.hash % color_classes.size] %>
+      <% active = current_page?(course_path(course)) %>
+      <li>
+        <%= link_to course_path(course), class: "flex items-center gap-2 px-4 py-2 rounded-r-full font-medium #{active ? 'bg-blue-100 text-blue-900' : 'text-gray-800'} hover:bg-gray-100" do %>
+          <span class="<%= color %> text-white rounded-full h-6 w-6 flex items-center justify-center text-xs font-bold">
+            <%= course.title.first %>
+          </span>
+          <span><%= course.title %></span>
+        <% end %>
+      </li>
+    <% end %>
+
+    <hr class="border-t border-gray-200 my-4">
+
+    <li>
+      <%= link_to '#', class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
+        <span class="text-xl">🗂️</span>
+        <span>Архівні курси todo</span>
+      <% end %>
     </li>
     <li>
-      <a href="#" class="text-blue-600 hover:underline flex items-center gap-1">
-        Особистий кабінет
-      </a>
-    </li>
-    <li class="font-semibold text-gray-900 select-none">
-      Мої курси
-      <ul class="mt-1 space-y-1">
-        <% current_user.enrolled_courses.each do |course| %>
-          <li class="ml-4">
-            - <%= link_to course.title, course_path(course), class: "text-blue-600 hover:underline" %>
-          </li>
-        <% end %>
-      </ul>
+      <%= link_to '#', class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
+        <span class="text-xl">⚙️</span>
+        <span>Налаштування</span>
+      <% end %>
     </li>
   </ul>
 </div>

@@ -1,67 +1,69 @@
-<h1 class="text-2xl font-bold mb-6">Course Material Submissions</h1>
+<div class="p-8">
+  <h1 class="text-2xl font-bold mb-6">Course Material Submissions</h1>
 
-<%= search_form_for @q, url: system_course_material_submissions_path, method: :get, class: "mb-6" do |f| %>
-  <div class="flex flex-wrap gap-4 items-end">
-    <div>
-      <%= f.label :user_email_cont, "Student Email", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.search_field :user_email_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
+  <%= search_form_for @q, url: system_course_material_submissions_path, method: :get, class: "mb-6" do |f| %>
+    <div class="flex flex-wrap gap-4 items-end">
+      <div>
+        <%= f.label :user_email_cont, "Student Email", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.search_field :user_email_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
+      </div>
+      <div>
+        <%= f.label :course_material_title_cont, "Material", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.search_field :course_material_title_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
+      </div>
+      <div>
+        <%= f.submit "Filter", class: "bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700" %>
+      </div>
     </div>
-    <div>
-      <%= f.label :course_material_title_cont, "Material", class: "block text-sm font-medium text-gray-700" %>
-      <%= f.search_field :course_material_title_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
-    </div>
-    <div>
-      <%= f.submit "Filter", class: "bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700" %>
-    </div>
-  </div>
-<% end %>
+  <% end %>
 
-<table class="min-w-full bg-white shadow rounded-lg overflow-hidden">
-  <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-    <tr>
-      <th class="px-4 py-2">ID</th>
-      <th class="px-4">Course</th>
-      <th class="px-4 py-2">Student</th>
-      <th class="px-4 py-2">Group</th>
-      <th class="px-4 py-2">Material</th>
-      <th class="px-4 py-2">File</th>
-      <th class="px-4 py-2">Submitted</th>
-      <th class="px-4 py-2">Grade</th>
-      <th class="px-4 py-2">Actions</th>
-    </tr>
-  </thead>
-  <tbody class="divide-y divide-gray-200 text-sm text-gray-800">
-    <% @submissions.each do |submission| %>
+  <table class="min-w-full bg-white shadow rounded-lg overflow-hidden">
+    <thead class="bg-gray-100 text-left text-sm font-semibold text-gray-700">
       <tr>
-        <td class="px-4 py-2">
-          <%= link_to submission.id, system_course_material_submission_path(submission), class: "text-blue-600 underline hover:text-blue-800" %>
-        </td>
-        <td class="px-4 py-2"><%= submission.course_material.course.title %></td>
-        <td class="px-4 py-2"><%= submission.user.email %></td>
-        <td class="px-4 py-2"><%= submission.user.student_group&.name || '—' %></td>
-        <td class="px-4 py-2"><%= submission.course_material.title %></td>
-        <td class="px-4 py-2">
-          <% if submission.file.attached? %>
-            <%= link_to "Open", url_for(submission.file), target: "_blank", class: "text-blue-600 underline hover:text-blue-800" %>
-          <% else %>
-            —
-          <% end %>
-        </td>
-        <td class="px-4 py-2"><%= l(submission.submitted_at, format: :long) if submission.submitted_at %></td>
-        <td class="px-4 py-2 text-center"><%= submission.grade || '—' %></td>
-        <td class="px-4 py-2">
-          <%= form_with url: grade_system_course_material_submission_path(submission), method: :post, local: true do |f| %>
-            <div class="flex gap-2">
-              <%= f.number_field :grade, value: submission.grade, min: 0, max: submission.course_material.max_grade, class: "w-20 border border-gray-300 rounded px-2 py-1" %>
-              <%= f.submit "Save", class: "bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-1 text-sm" %>
-            </div>
-          <% end %>
-        </td>
+        <th class="px-4 py-2">ID</th>
+        <th class="px-4">Course</th>
+        <th class="px-4 py-2">Student</th>
+        <th class="px-4 py-2">Group</th>
+        <th class="px-4 py-2">Material</th>
+        <th class="px-4 py-2">File</th>
+        <th class="px-4 py-2">Submitted</th>
+        <th class="px-4 py-2">Grade</th>
+        <th class="px-4 py-2">Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody class="divide-y divide-gray-200 text-sm text-gray-800">
+      <% @submissions.each do |submission| %>
+        <tr>
+          <td class="px-4 py-2">
+            <%= link_to submission.id, system_course_material_submission_path(submission), class: "text-blue-600 underline hover:text-blue-800" %>
+          </td>
+          <td class="px-4 py-2"><%= submission.course_material.course.title %></td>
+          <td class="px-4 py-2"><%= submission.user.email %></td>
+          <td class="px-4 py-2"><%= submission.user.student_group&.name || '—' %></td>
+          <td class="px-4 py-2"><%= submission.course_material.title %></td>
+          <td class="px-4 py-2">
+            <% if submission.file.attached? %>
+              <%= link_to "Open", url_for(submission.file), target: "_blank", class: "text-blue-600 underline hover:text-blue-800" %>
+            <% else %>
+              —
+            <% end %>
+          </td>
+          <td class="px-4 py-2"><%= l(submission.submitted_at, format: :long) if submission.submitted_at %></td>
+          <td class="px-4 py-2 text-center"><%= submission.grade || '—' %></td>
+          <td class="px-4 py-2">
+            <%= form_with url: grade_system_course_material_submission_path(submission), method: :post, local: true do |f| %>
+              <div class="flex gap-2">
+                <%= f.number_field :grade, value: submission.grade, min: 0, max: submission.course_material.max_grade, class: "w-20 border border-gray-300 rounded px-2 py-1" %>
+                <%= f.submit "Save", class: "bg-blue-500 hover:bg-blue-600 text-white rounded px-3 py-1 text-sm" %>
+              </div>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<div class="my-6">
-  <%= pagy_tailwind_nav(@pagy) %>
+  <div class="my-6">
+    <%= pagy_tailwind_nav(@pagy) %>
+  </div>
 </div>

@@ -24,6 +24,8 @@ gem 'pagy'
 gem 'ransack'
 gem 'sidekiq'
 gem 'sidekiq-scheduler'
+gem 'pdf-reader'
+gem 'tf-idf-similarity'
 
 group :development, :test do
   gem 'debug', platforms: %i[ mri windows ], require: 'debug/prelude'
