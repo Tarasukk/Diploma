@@ -17,7 +17,7 @@ gem 'devise'
 gem 'omniauth-google-oauth2'
 gem 'image_processing', '~> 1.2'
 gem 'font-awesome-rails'
-gem 'kamal', '2.3.0'
+gem 'kamal', '2.6.0'
 gem 'thruster', '0.1.8'
 
 group :development, :test do
