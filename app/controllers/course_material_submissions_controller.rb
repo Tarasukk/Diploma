@@ -6,6 +6,11 @@ class CourseMaterialSubmissionsController < ApplicationController
     if @submission.file.attached?
       if @submission.save
         destroy_event
+
+        if current_user.auto_generate_title_page? && params[:course_material_submission][:file].content_type == 'application/pdf'
+          PdfService.attach_title_page(@submission)
+        end
+
         flash[:notice] = 'Роботу успішно надіслано.'
       else
         flash[:alert] = 'Помилка при збереженні файлу.'

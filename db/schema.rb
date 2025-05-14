@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_11_161823) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,6 +77,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_11_161823) do
     t.boolean "submittable"
     t.datetime "deadline"
     t.integer "max_grade"
+    t.integer "assignment_number"
+    t.string "topic"
     t.index ["course_section_id"], name: "index_course_materials_on_course_section_id"
   end
 
@@ -144,6 +146,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_11_161823) do
     t.string "name"
     t.string "phone_number"
     t.bigint "student_group_id"
+    t.boolean "disable_emails"
+    t.boolean "auto_generate_title_page", default: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["student_group_id"], name: "index_users_on_student_group_id"

@@ -74,6 +74,8 @@ module System
         :content,
         :material_type,
         :submittable,
+        :topic,
+        :assignment_number,
         :max_grade,
         :deadline,
         files: []

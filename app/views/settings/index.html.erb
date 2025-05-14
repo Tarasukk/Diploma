@@ -1,0 +1,35 @@
+<div class="p-8">
+  <h1 class="text-xl font-semibold mb-6">Налаштування</h1>
+
+  <%= form_with model: current_user, url: settings_update_preferences_path, method: :put, local: true do |f| %>
+    <div class="space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-base font-medium text-gray-900">Відключити email повідомлення</div>
+          <div class="text-sm text-gray-500">Ви не будете отримувати жодних листів з платформи</div>
+        </div>
+        <div class="relative">
+          <%= f.check_box :disable_emails, class: "sr-only peer", id: "disable_emails_toggle" %>
+          <label for="disable_emails_toggle" class="block w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-orange-400 transition-colors duration-300 ease-in-out cursor-pointer relative">
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-all duration-300 ease-in-out peer-checked:translate-x-5 peer-checked:rotate-180"></span>
+          </label>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="text-base font-medium text-gray-900">Автогенерація титульної сторінки</div>
+          <div class="text-sm text-gray-500">Автоматично додавати титулку до завантаженого PDF при здачі завдання</div>
+        </div>
+        <div class="relative">
+          <%= f.check_box :auto_generate_title_page, class: "sr-only peer", id: "auto_generate_title_toggle" %>
+          <label for="auto_generate_title_toggle" class="block w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-orange-400 transition-colors duration-300 ease-in-out cursor-pointer relative">
+            <span class="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow-md transform transition-all duration-300 ease-in-out peer-checked:translate-x-5 peer-checked:rotate-180"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="mt-8">
+      <%= f.submit "Зберегти", class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300" %>
+    </div>
+  <% end %>
+</div>

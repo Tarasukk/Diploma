@@ -27,6 +27,10 @@ gem 'sidekiq-scheduler'
 gem 'pdf-reader'
 gem 'tf-idf-similarity'
 
+gem 'prawn'
+gem 'combine_pdf'
+
+
 group :development, :test do
   gem 'debug', platforms: %i[ mri windows ], require: 'debug/prelude'
   gem 'brakeman', require: false

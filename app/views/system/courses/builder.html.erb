@@ -57,6 +57,16 @@
           </div>
 
           <div class="mb-4">
+            <%= f.label :topic, "Тема", class: "block font-medium mb-1" %>
+            <%= f.text_field :topic, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
+            <%= f.label :assignment_number, "Номер роботи", class: "block font-medium mb-1" %>
+            <%= f.number_field :assignment_number, min: 0, class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
+          <div class="mb-4">
             <%= f.label :max_grade, "Максимальний бал", class: "block font-medium mb-1" %>
             <%= f.number_field :max_grade, min: 0, class: "w-full border border-gray-200 rounded px-3 py-2" %>
           </div>

@@ -53,8 +53,8 @@
         <span>Архівні курси todo</span>
       <% end %>
     </li>
-    <li>
-      <%= link_to '#', class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
+    <li class="mb-5">
+      <%= link_to settings_path, class: "flex items-center gap-2 px-4 py-2 rounded-r-full #{'bg-blue-100 text-blue-900' if current_page?(settings_path)} hover:bg-gray-100" do %>
         <span class="text-xl">⚙️</span>
         <span>Налаштування</span>
       <% end %>

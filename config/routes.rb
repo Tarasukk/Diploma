@@ -24,6 +24,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root 'courses#index'
 
+  get 'settings', to: 'settings#index'
+  put 'settings/update_preferences', to: 'settings#update_preferences'
+
   resource :profile, only: %i[show update]
   resources :courses, only: %i[index show] do
     member do
