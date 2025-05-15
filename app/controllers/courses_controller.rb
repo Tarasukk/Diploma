@@ -34,7 +34,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  Course.first.course_sections.first.course_materials.where(submittable: true).take.course_material_submissions.where(user_id: User.first)
   def enrolled_students
     @course = Course.find(params[:id])
     @same_group_students = @course.students.where(student_group_id: current_user.student_group_id)
