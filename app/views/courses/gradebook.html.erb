@@ -1,0 +1,43 @@
+<div class="p-8">
+  <%= render "header" %>
+
+  <div class="overflow-x-auto shadow rounded-lg border border-gray-200">
+    <table class="min-w-full divide-y divide-gray-200 bg-white text-sm text-gray-700">
+      <thead class="bg-gray-100 text-xs uppercase text-gray-500">
+        <tr>
+          <th class="px-6 py-3 text-left">Матеріал</th>
+          <th class="px-6 py-3 text-left">Оцінка</th>
+          <th class="px-6 py-3 text-left">Макс. балів</th>
+          <th class="px-6 py-3 text-left">Вплив (%)</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-100">
+        <% @materials.each do |material| %>
+          <% submission = @submissions_by_material_id[material.id] %>
+          <% percent = @max_grade > 0 ? ((material.max_grade.to_f / @max_grade) * 100).round(1) : 0 %>
+          <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 font-medium text-blue-600">
+              <%= link_to material.title, course_material_path(material), class: "hover:underline" %>
+            </td>
+            <td class="px-6 py-4"><%= submission&.grade || 0 %></td>
+            <td class="px-6 py-4"><%= material.max_grade %></td>
+            <td class="px-6 py-4"><%= percent %>%</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-6">
+    <p class="text-base text-gray-800 font-semibold mb-2">
+      Загалом: <%= @total_grade %> / <%= @max_grade %> балів
+    </p>
+
+    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+      <div
+        class="h-full bg-green-500 transition-all duration-500 ease-in-out"
+        style="width: <%= @max_grade > 0 ? ((@total_grade.to_f / @max_grade) * 100).round(1) : 0 %>%">
+      </div>
+    </div>
+  </div>
+</div>

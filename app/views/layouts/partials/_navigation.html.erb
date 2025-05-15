@@ -32,20 +32,61 @@
       </div>
     </li>
 
-    <% current_user.enrolled_courses.each do |course| %>
-      <% color = color_classes[course.title.hash % color_classes.size] %>
-      <% active = current_page?(course_path(course)) %>
-      <li>
-        <%= link_to course_path(course), class: "flex items-center gap-2 px-4 py-2 rounded-r-full font-medium #{active ? 'bg-blue-100 text-blue-900' : 'text-gray-800'} hover:bg-gray-100" do %>
-          <span class="<%= color %> text-white rounded-full h-6 w-6 flex items-center justify-center text-xs font-bold">
-            <%= course.title.first %>
-          </span>
-          <span><%= course.title %></span>
-        <% end %>
-      </li>
-    <% end %>
+    <% if current_user.admin? %>
+      <% Course.where(teacher_id: current_user.id)&.each do |course| %>
+        <% color = color_classes[course.title.hash % color_classes.size] %>
+        <% active = current_page?(course_path(course)) %>
+        <li>
+          <%= link_to course_path(course), class: "flex items-center gap-2 px-4 py-2 rounded-r-full font-medium #{active ? 'bg-blue-100 text-blue-900' : 'text-gray-800'} hover:bg-gray-100" do %>
+            <span class="<%= color %> text-white rounded-full h-6 w-6 flex items-center justify-center text-xs font-bold">
+              <%= course.title.first %>
+            </span>
+            <span><%= course.title %></span>
+          <% end %>
+        </li>
+      <% end %>
+    <% else %>
+      <% current_user.enrolled_courses.each do |course| %>
+        <% color = color_classes[course.title.hash % color_classes.size] %>
+        <% active = current_page?(course_path(course)) %>
+        <li>
+          <%= link_to course_path(course), class: "flex items-center gap-2 px-4 py-2 rounded-r-full font-medium #{active ? 'bg-blue-100 text-blue-900' : 'text-gray-800'} hover:bg-gray-100" do %>
+            <span class="<%= color %> text-white rounded-full h-6 w-6 flex items-center justify-center text-xs font-bold">
+              <%= course.title.first %>
+            </span>
+            <span><%= course.title %></span>
+          <% end %>
+        </li>
+      <% end %>
+    <% end %> 
+
 
     <hr class="border-t border-gray-200 my-4">
+
+    <% if current_user.admin? %>
+      <li>
+        <div class="flex items-center justify-between gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full font-medium text-gray-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🧑‍🏫</span>
+            <span>Панель Викладача</span>
+          </div>
+          <span class="text-gray-500 text-xl">▾</span>
+        </div>
+      </li>
+      <li>
+        <%= link_to system_course_builder_path, class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
+          <span class="text-xl">🏗️</span>
+          <span>Конструктор курсу</span>
+        <% end %>
+      </li>
+      <li>
+        <%= link_to system_course_material_submissions_path, class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
+          <span class="text-xl">📝</span>
+          <span>Перевірка робіт</span>
+        <% end %>
+      </li>
+      <hr class="border-t border-gray-200 my-4">
+    <% end %>
 
     <li>
       <%= link_to '#', class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>

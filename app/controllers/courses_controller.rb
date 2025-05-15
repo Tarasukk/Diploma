@@ -15,6 +15,26 @@ class CoursesController < ApplicationController
     end
   end
 
+  def gradebook
+    @course = Course.find(params[:id])
+    @materials = CourseMaterial.joins(course_section: :course)
+      .where(course_sections: { course_id: @course.id })
+      .where(submittable: true)
+    @submissions_by_material_id = current_user.course_material_submissions.joins(course_material: { course_section: :course })
+      .where(course_sections: { course_id: @course.id })
+      .index_by(&:course_material_id)
+
+    @total_grade = 0
+    @max_grade = 0
+
+    @materials.each do |material|
+      submission = @submissions_by_material_id[material.id]
+      @total_grade += submission&.grade.to_f
+      @max_grade += material.max_grade.to_f
+    end
+  end
+
+  Course.first.course_sections.first.course_materials.where(submittable: true).take.course_material_submissions.where(user_id: User.first)
   def enrolled_students
     @course = Course.find(params[:id])
     @same_group_students = @course.students.where(student_group_id: current_user.student_group_id)

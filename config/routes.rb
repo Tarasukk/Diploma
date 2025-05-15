@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     member do
       post :enroll
       get :enrolled_students
+      get :gradebook
     end
   end
   resources :schedule_events, only: %i[create destroy]

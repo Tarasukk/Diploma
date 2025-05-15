@@ -19,4 +19,9 @@ class CourseMaterial < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     %w[content course_section_id created_at deadline id material_type max_grade submittable title updated_at]
   end
+
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[course_material_submissions course_section]
+  end
 end

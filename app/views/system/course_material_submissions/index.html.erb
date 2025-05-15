@@ -8,8 +8,22 @@
         <%= f.search_field :user_email_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
       </div>
       <div>
+        <%= f.label :user_student_group_name_cont, "Group", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.search_field :user_student_group_name_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
+      </div>
+      <div>
         <%= f.label :course_material_title_cont, "Material", class: "block text-sm font-medium text-gray-700" %>
         <%= f.search_field :course_material_title_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
+      </div>
+      <div>
+        <%= f.label :course_material_course_section_course_title_cont, "Course Title", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.search_field :course_material_course_section_course_title_cont, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
+      </div>
+      <div>
+        <%= f.label :status_eq, "Статус", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.select :status_eq,
+          [['Усі', nil], ['Не оцінено', 'pending'], ['Оцінено', 'graded']],
+          {}, class: "border border-gray-300 rounded px-2 py-1 w-48" %>
       </div>
       <div>
         <%= f.submit "Filter", class: "bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700" %>

@@ -8,4 +8,8 @@ class Course < ApplicationRecord
 
   has_one_attached :preview_file
   has_one_attached :avatar
+
+  def self.ransackable_attributes(auth_object = nil)
+    %w[created_at department description id teacher_id title updated_at]
+  end
 end

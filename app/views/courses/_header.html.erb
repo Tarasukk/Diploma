@@ -9,10 +9,14 @@
 <div class="flex gap-4 mb-6 justify-center items-center">
   <% is_show = current_page?(course_path(@course)) %>
   <% is_enrolled = current_page?(enrolled_students_course_path(@course)) %>
+  <% is_gradebook = current_page?(gradebook_course_path(@course)) %>
 
   <%= link_to "Завдання", course_path(@course),
     class: "px-4 py-2 rounded font-semibold #{is_show ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}" %>
 
   <%= link_to "Учасники", enrolled_students_course_path(@course),
     class: "px-4 py-2 rounded font-semibold #{is_enrolled ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}" %>
+
+  <%= link_to "Журнал оцінок", gradebook_course_path(@course),
+    class: "px-4 py-2 rounded font-semibold #{is_gradebook ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}" %>
 </div>

@@ -3,7 +3,7 @@ module System
     def index
       @q = CourseMaterialSubmission.ransack(params[:q])
       @pagy, @submissions = pagy(
-        @q.result.includes(:user, :course_material).order(created_at: :desc)
+        @q.result.includes(user: :student_group, course_material: { course_section: :course }).order(created_at: :desc)
       )
     end
 
