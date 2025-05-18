@@ -1,0 +1,64 @@
+<div class="max-w-2xl mx-auto mt-10 space-y-6">
+
+  <div class="flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-gray-800">
+      Тест: <%= @student_test.test.title %>
+    </h1>
+  </div>
+  <div class="bg-gray-100 p-4 rounded shadow">
+    <h2 class="text-lg font-bold mb-4 text-gray-800">Усі питання тесту</h2>
+    <div class="flex flex-wrap gap-2">
+      <% @questions.each_with_index do |question, index| %>
+        <% answered = @answered_question_ids.include?(question.id) %>
+        <% active = question.id == @question.id %>
+
+        <% button_classes = "w-10 h-10 flex items-center justify-center rounded-full border text-sm font-semibold" %>
+        <% button_classes += if active
+            " bg-blue-600 text-white"
+          elsif answered
+            " bg-gray-300 text-gray-700"
+          else
+            " bg-white text-gray-800 hover:bg-gray-200"
+          end
+        %>
+
+        <%= button_to "#{index + 1}",
+          switch_question_student_test_path(@student_test, question_id: question.id),
+          method: :patch,
+          class: button_classes %>
+      <% end %>
+    </div>
+  </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-semibold mb-4 text-gray-900">
+        <%= @question.content %>
+      </h2>
+
+      <%= form_with url: answer_student_test_path(@student_test), method: :post do %>
+        <div class="space-y-3">
+          <% @question.answers.each do |answer| %>
+            <div class="flex items-center space-x-3">
+              <%= radio_button_tag :answer_id, answer.id, @student_answer&.answer_id == answer.id, class: "h-4 w-4 text-blue-600" %>
+              <%= label_tag "answer_id_#{answer.id}", answer.content, class: "text-gray-700" %>
+            </div>
+          <% end %>
+        </div>
+
+        <%= hidden_field_tag :question_id, @question.id %>
+
+        <div class="mt-6">
+          <% if @last_question == @question %>
+            <div class="flex  gap-4">
+              <%= submit_tag "Завершити тест", class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded" %>
+              <p class="text-sm text-gray-600 mt-2">
+                Натиснувши кнопку, ви завершите тест і перейдете на сторінку результатів
+              </p>
+            </div>
+          <% else %>
+            <%= submit_tag "Відповісти", class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+</div>

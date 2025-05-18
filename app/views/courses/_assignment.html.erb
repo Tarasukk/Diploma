@@ -7,6 +7,8 @@
         <div class="flex items-center gap-3">
           <% if material.submittable? %>
             <%= image_tag "/images/attach.png", style: "max-width: 40px;" %>
+          <% elsif material.test_id.present? %>
+            <%= image_tag "/images/quiz.png", style: "max-width: 40px;" %>
           <% else %>
             <% if material&.files&.first.content_type == "application/pdf" %>
               <%= image_tag "/images/pdf.png", style: "max-width: 40px;" %>
@@ -23,6 +25,11 @@
                 <% else %>
                   <%= link_to material.title, course_material_path(material), class: "text-blue-600 underline hover:text-blue-800" %>
                 <% end %>
+              <% elsif material.test_id.present? %>
+                <%= button_to material.title, start_quiz_course_material_path(material),
+                  method: :post,
+                  class: "text-blue-600 underline hover:text-blue-800 bg-transparent border-none p-0 inline",
+                  form_class: "inline" %>
               <% else %>
                 <%= link_to material.title, url_for(material.files.first), target: "_blank" %>
               <% end %>
@@ -36,7 +43,7 @@
           </div>
         </div>
 
-        <% if material.submittable? && !current_user.admin? %>
+        <% if material.submittable? || material.test_id.present? && !current_user.admin? %>
           <% submission = StudentService.get_student_submission(current_user, material) %>
 
           <% if submission&.graded? %>

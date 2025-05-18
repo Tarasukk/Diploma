@@ -27,6 +27,13 @@ Rails.application.routes.draw do
   get 'settings', to: 'settings#index'
   put 'settings/update_preferences', to: 'settings#update_preferences'
 
+  resources :student_tests, only: %i[show] do
+    member do
+      patch :switch_question
+      post :answer
+      get :results
+    end
+  end
   resource :profile, only: %i[show update]
   resources :courses, only: %i[index show] do
     member do
@@ -38,6 +45,7 @@ Rails.application.routes.draw do
   resources :schedule_events, only: %i[create destroy]
   resources :course_materials, only: %i[show] do
     member do
+      post :start_quiz
       put :update_file
       delete :remove_file
     end
@@ -51,6 +59,13 @@ Rails.application.routes.draw do
       member do
         post :grade
       end
+    end
+
+    resources :quizzes, only: %i[index show create] do
+      resources :questions, only: %i[create]
+    end
+    resources :questions, only: %i[destroy] do
+      resources :answers, only: %i[create]
     end
 
     get 'course_builder', to: 'courses#builder'

@@ -1,0 +1,48 @@
+<div class="max-w-4xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800 border-b border-gray-200 pb-2"><%= @test.title %></h1>
+
+  <h2 class="text-2xl font-semibold mb-4 text-gray-700">Питання</h2>
+
+  <% @test.questions.select(&:persisted?).each do |q| %>
+    <div class="mb-6 border border-gray-200 rounded-lg shadow-sm bg-white p-5">
+      <div class="flex justify-between items-start">
+        <p class="text-lg font-medium text-gray-900"><%= q.content %></p>
+        <%= button_to "✕", system_question_path(q),
+                      method: :delete,
+                      data: { confirm: "Ти впевнений?" },
+                      class: "text-red-500 hover:text-red-700 text-sm font-semibold" %>
+      </div>
+
+      <ul class="mt-4 space-y-1">
+        <% q.answers.each do |a| %>
+          <li class="ml-4 list-disc <%= a.correct? ? 'text-green-700 font-semibold' : 'text-gray-800' %>">
+            <%= a.content %>
+          </li>
+        <% end %>
+      </ul>
+
+      <%= form_with url: system_question_answers_path(q), method: :post, local: true, class: "mt-4" do |f| %>
+        <%= hidden_field_tag "answer[question_id]", q.id %>
+        <div class="flex items-center gap-3">
+          <%= f.text_field :content, name: "answer[content]", placeholder: "Нова відповідь", class: "flex-1 border border-gray-200 px-3 py-2 rounded-md" %>
+          <div class="flex items-center gap-1">
+            <%= f.check_box :correct, name: "answer[correct]", class: "h-4 w-4" %>
+            <%= f.label :correct, "Правильна", class: "text-sm" %>
+          </div>
+          <%= f.submit "Додати", class: "bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-semibold" %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="border-t border-gray-200 mt-10 pt-6">
+    <h2 class="text-2xl font-semibold mb-3 text-gray-700">Додати нове питання</h2>
+
+    <%= form_with model: [@test, @question], url: system_quiz_questions_path(@test), local: true do |f| %>
+      <div class="flex gap-3">
+        <%= f.text_area :content, placeholder: "Текст питання", class: "flex-1 border border-gray-200 px-3 py-2 rounded-md resize-none" %>
+        <%= f.submit "Додати питання", class: "bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-semibold" %>
+      </div>
+    <% end %>
+  </div>
+</div>

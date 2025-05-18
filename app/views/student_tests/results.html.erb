@@ -1,0 +1,24 @@
+<div class="max-w-2xl mx-auto mt-10 space-y-6">
+	<h1 class="text-2xl font-bold text-gray-800">Результати тесту</h1>
+
+	<ul class="space-y-4">
+		<% @evaluated_results.each do |entry| %>
+			<li class="p-4 rounded border <%= entry[:correct] ? 'border-green-500 bg-green-50' : 'border-red-500 bg-red-50' %>">
+				<p class="font-semibold"><%= entry[:question].content %></p>
+				<p>Ваша відповідь: <%= entry[:student_answer]&.content || "нема відповіді" %></p>
+				<% unless entry[:correct] %>
+					<p class="text-sm text-gray-600">Правильна відповідь: <%= entry[:correct_answer].content %></p>
+				<% end %>
+			</li>
+		<% end %>
+	</ul>
+
+	<div class="flex justify-between items-center mt-6 p-4 bg-gray-100 rounded">
+		<p class="text-xl font-bold text-gray-800">
+			Ваш бал: <%= @score %> / <%= @total %>
+		</p>
+
+		<%= link_to "← Назад до курсу", course_path(@material.course),
+			class: "bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded shadow" %>
+	</div>
+</div>

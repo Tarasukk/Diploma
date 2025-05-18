@@ -19,7 +19,7 @@ class CoursesController < ApplicationController
     @course = Course.find(params[:id])
     @materials = CourseMaterial.joins(course_section: :course)
       .where(course_sections: { course_id: @course.id })
-      .where(submittable: true)
+      .where('course_materials.submittable = ? OR course_materials.test_id IS NOT NULL', true)
     @submissions_by_material_id = current_user.course_material_submissions.joins(course_material: { course_section: :course })
       .where(course_sections: { course_id: @course.id })
       .index_by(&:course_material_id)

@@ -17,7 +17,14 @@
           <% percent = @max_grade > 0 ? ((material.max_grade.to_f / @max_grade) * 100).round(1) : 0 %>
           <tr class="hover:bg-gray-50">
             <td class="px-6 py-4 font-medium text-blue-600">
-              <%= link_to material.title, course_material_path(material), class: "hover:underline" %>
+              <% if material.test_id.present? %>
+                <%= button_to material.title, start_quiz_course_material_path(material),
+                  method: :post,
+                  class: "text-blue-600 hover:underline bg-transparent border-none p-0 inline",
+                  form_class: "inline" %>
+              <% else %>
+                <%= link_to material.title, course_material_path(material), class: "hover:underline" %>
+              <% end %>
             </td>
             <td class="px-6 py-4"><%= submission&.grade || 0 %></td>
             <td class="px-6 py-4"><%= material.max_grade %></td>

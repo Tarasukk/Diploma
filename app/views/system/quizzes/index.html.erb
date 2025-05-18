@@ -1,0 +1,42 @@
+<div class="max-w-4xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-6 text-gray-800 border-b border-gray-200 pb-2">Всі тести</h1>
+
+  <% if @tests.any? %>
+    <ul class="space-y-3 mb-10">
+      <% @tests.each do |test| %>
+        <li>
+          <%= link_to system_quiz_path(test),
+                      class: "block transform transition hover:scale-[1.02] bg-white border border-gray-200 rounded px-5 py-4 shadow-sm hover:shadow-md" do %>
+            <div class="text-lg text-gray-800 font-semibold"><%= test.title %></div>
+            <% if test.description.present? %>
+              <p class="text-sm text-gray-500 mt-1"><%= truncate(test.description, length: 100) %></p>
+            <% end %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p class="text-gray-500 mb-10">Тестів ще немає. Створіть перший нижче.</p>
+  <% end %>
+
+  <div class="bg-gray-50 p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold mb-4 text-gray-700">Створити новий тест</h2>
+
+    <%= form_with model: @test, url: system_quizzes_path, local: true do |f| %>
+      <div class="mb-4">
+        <%= f.label :title, "Назва тесту", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :title,
+            class: "border border-gray-300 rounded-md w-full px-3 py-2 focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :description, "Опис", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_area :description, rows: 3,
+            class: "border border-gray-300 rounded-md w-full px-3 py-2 focus:ring-blue-500 focus:border-blue-500 resize-none" %>
+      </div>
+
+      <%= f.submit "Створити тест",
+          class: "bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-md font-semibold transition" %>
+    <% end %>
+  </div>
+</div>

@@ -85,13 +85,19 @@
           <span>Перевірка робіт</span>
         <% end %>
       </li>
+      <li>
+        <%= link_to system_quizzes_path, class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
+          <span class="text-xl">❓</span>
+          <span>Cтворення тестових завдань</span>
+        <% end %>
+      </li>
       <hr class="border-t border-gray-200 my-4">
     <% end %>
 
     <li>
       <%= link_to '#', class: "flex items-center gap-2 px-4 py-2 hover:bg-gray-100 rounded-r-full" do %>
         <span class="text-xl">🗂️</span>
-        <span>Архівні курси todo</span>
+        <span>Архівні курси</span>
       <% end %>
     </li>
     <li class="mb-5">

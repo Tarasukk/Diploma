@@ -71,6 +71,14 @@
             <%= f.number_field :max_grade, min: 0, class: "w-full border border-gray-200 rounded px-3 py-2" %>
           </div>
 
+          <div class="mb-6">
+            <%= f.label :test_id, "Додати тест", class: "block font-medium mb-1" %>
+            <%= f.select :test_id,
+                  Test.all.map { |t| [t.title, t.id] },
+                  { include_blank: "Без тесту" },
+                  class: "w-full border border-gray-200 rounded px-3 py-2" %>
+          </div>
+
           <div class="mb-4">
             <%= f.label :deadline, "Дедлайн", class: "block font-medium mb-1" %>
             <%= f.date_field :deadline, class: "w-full border border-gray-200 rounded px-3 py-2" %>

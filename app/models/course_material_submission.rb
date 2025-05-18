@@ -11,7 +11,7 @@ class CourseMaterialSubmission < ApplicationRecord
     graded: 'graded'
   }
 
-  validates :user_id, :course_material_id, :file, presence: true
+  validates :user_id, :course_material_id, presence: true
 
 
   def self.ransackable_attributes(auth_object = nil)

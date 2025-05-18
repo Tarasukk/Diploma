@@ -46,6 +46,23 @@ class CourseMaterialsController < ApplicationController
     @teacher = StudentService.get_who_grade(@student_submition)
   end
 
+  def start_quiz
+    material = CourseMaterial.find(params[:id])
+    test = material.test
+
+    student_test = StudentTest.find_by(user: current_user, test: test)
+
+    unless student_test
+      student_test = StudentTest.create!(
+        user: current_user,
+        test: test,
+        current_question: test.questions.order(:id).first
+      )
+    end
+
+    redirect_to student_test_path(student_test)
+  end
+
   private
 
   def authorize_teacher! #todo

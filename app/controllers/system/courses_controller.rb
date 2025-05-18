@@ -71,6 +71,7 @@ module System
       params.require(:course_material).permit(
         :title,
         :course_section_id,
+        :test_id,
         :content,
         :material_type,
         :submittable,

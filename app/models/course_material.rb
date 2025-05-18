@@ -4,10 +4,13 @@ class CourseMaterial < ApplicationRecord
   has_many :course_material_submissions, dependent: :destroy
   has_many_attached :files
 
+  belongs_to :test, optional: true
+
   attribute :submittable, :boolean, default: false
   enum material_type: {
     lecture: 'lecture',
-    lab: 'lab'
+    lab: 'lab',
+    quiz: 'quiz'
   }
 
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
+ActiveRecord::Schema[7.2].define(version: 2025_05_17_195503) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -40,6 +40,15 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "answers", force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.string "content"
+    t.boolean "correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
   create_table "course_enrollments", force: :cascade do |t|
@@ -79,7 +88,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
     t.integer "max_grade"
     t.integer "assignment_number"
     t.string "topic"
+    t.bigint "test_id"
     t.index ["course_section_id"], name: "index_course_materials_on_course_section_id"
+    t.index ["test_id"], name: "index_course_materials_on_test_id"
   end
 
   create_table "course_sections", force: :cascade do |t|
@@ -101,6 +112,14 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
     t.index ["teacher_id"], name: "index_courses_on_teacher_id"
   end
 
+  create_table "questions", force: :cascade do |t|
+    t.bigint "test_id", null: false
+    t.string "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["test_id"], name: "index_questions_on_test_id"
+  end
+
   create_table "schedule_events", force: :cascade do |t|
     t.string "title"
     t.date "date"
@@ -116,10 +135,33 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
     t.index ["user_id"], name: "index_schedule_events_on_user_id"
   end
 
+  create_table "student_answers", force: :cascade do |t|
+    t.bigint "student_test_id", null: false
+    t.bigint "question_id", null: false
+    t.bigint "answer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_student_answers_on_answer_id"
+    t.index ["question_id"], name: "index_student_answers_on_question_id"
+    t.index ["student_test_id"], name: "index_student_answers_on_student_test_id"
+  end
+
   create_table "student_groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "student_tests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "test_id", null: false
+    t.bigint "current_question_id"
+    t.boolean "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["current_question_id"], name: "index_student_tests_on_current_question_id"
+    t.index ["test_id"], name: "index_student_tests_on_test_id"
+    t.index ["user_id"], name: "index_student_tests_on_user_id"
   end
 
   create_table "submission_comments", force: :cascade do |t|
@@ -130,6 +172,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
     t.datetime "updated_at", null: false
     t.index ["course_material_submission_id"], name: "index_submission_comments_on_course_material_submission_id"
     t.index ["user_id"], name: "index_submission_comments_on_user_id"
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -155,18 +204,27 @@ ActiveRecord::Schema[7.2].define(version: 2025_05_13_162525) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "answers", "questions"
   add_foreign_key "course_enrollments", "courses"
   add_foreign_key "course_enrollments", "users"
   add_foreign_key "course_material_submissions", "course_materials"
   add_foreign_key "course_material_submissions", "users"
   add_foreign_key "course_material_submissions", "users", column: "graded_by_id"
   add_foreign_key "course_materials", "course_sections"
+  add_foreign_key "course_materials", "tests"
   add_foreign_key "course_sections", "courses"
   add_foreign_key "courses", "users", column: "teacher_id"
+  add_foreign_key "questions", "tests"
   add_foreign_key "schedule_events", "course_materials"
   add_foreign_key "schedule_events", "courses"
   add_foreign_key "schedule_events", "student_groups"
   add_foreign_key "schedule_events", "users"
+  add_foreign_key "student_answers", "answers"
+  add_foreign_key "student_answers", "questions"
+  add_foreign_key "student_answers", "student_tests"
+  add_foreign_key "student_tests", "questions", column: "current_question_id"
+  add_foreign_key "student_tests", "tests"
+  add_foreign_key "student_tests", "users"
   add_foreign_key "submission_comments", "course_material_submissions"
   add_foreign_key "submission_comments", "users"
   add_foreign_key "users", "student_groups"
