@@ -1,1 +1,105 @@
-<%= @submission.id %>
+<div class="flex flex-wrap gap-8 p-8">
+  <div class="flex-1 min-w-[300px]">
+    <h2 class="text-2xl font-bold mb-4">Статус роботи <%=  @submission.course_material.title %> з предмету <%= @submission.course_material.course.title %></h2>
+    <table class="w-full text-sm border border-gray-200">
+      <tbody>
+        <tr>
+          <td class="border border-gray-200 p-2">Студент групи <%= @submission.user.student_group.name %></td>
+          <td class="border border-gray-200 p-2"><%= @submission.user.name %> | <%= @submission.user.email %></td>
+        </tr>
+        <tr class="bg-yellow-100">
+          <td class="border border-gray-200 p-2">Дедлайн</td>
+          <td class="border border-gray-200 p-2">
+            <%= CourseMaterialService.submission_delay_text(@submission.user, @submission.course_material) %>
+          </td>
+        </tr>
+        <tr>
+          <td class="border border-gray-200 p-2 font-medium">Востаннє змінено</td>
+          <td class="border border-gray-200 p-2"><%= l(@submission.updated_at, format: :long) %></td>
+        </tr>
+        <tr>
+          <td class="border border-gray-200 p-2 font-medium">Завантаження файлу</td>
+          <td class="border border-gray-200 p-2">
+            <% if @submission.file.attached? %>
+              <%= link_to @submission.file.filename.to_s, rails_blob_path(@submission.file, disposition: "attachment"), class: "text-blue-600 underline" %><br>
+            <% else %>
+              <span class="text-gray-500">Файл не прикріплений</span>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <div class="mt-8" x-data="{ edit: <%= @submission.grade.present? ? 'false' : 'true' %> }">
+      <h2 class="text-xl font-semibold mb-2">Відгук</h2>
+
+      <div x-show="!edit" class="space-y-2">
+        <table class="w-full text-sm border border-gray-200">
+          <tr>
+            <td class="border border-gray-200 p-2 font-medium">Оцінка</td>
+            <td class="border border-gray-200 p-2"><%= @submission.grade || "-" %> / <%= @submission.course_material.max_grade %></td>
+          </tr>
+          <tr>
+            <td class="border border-gray-200 p-2 font-medium">Оцінено на</td>
+            <td class="border border-gray-200 p-2"><%= @submission.graded_at ? l(@submission.graded_at, format: :long) : "-" %></td>
+          </tr>
+          <tr>
+            <td class="border border-gray-200 p-2 font-medium">Оцінив</td>
+            <td class="border border-gray-200 p-2"><%= @submission.graded_by&.name || "-" %></td>
+          </tr>
+        </table>
+
+        <button @click="edit = true" class="mt-2 inline-flex items-center justify-center rounded-lg bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 text-sm font-medium transition-colors">
+          Змінити оцінку
+        </button>
+      </div>
+
+      <div x-show="edit" class="mt-4">
+        <%= form_with url: grade_system_course_material_submission_path(@submission), method: :post, local: true do |f| %>
+          <div class="flex gap-2 items-end">
+            <div>
+              <%= f.label :grade, "Оцінка", class: "block text-sm font-medium" %>
+              <%= f.number_field :grade,
+                    value: @submission.grade,
+                    min: 0,
+                    max: @submission.course_material.max_grade,
+                    class: "w-24 border border-gray-200 rounded px-2 py-1" %>
+            </div>
+            <%= f.submit "Зберегти", class: "bg-blue-600 text-white rounded px-3 py-2 text-sm" %>
+            <button type="button" @click="edit = false" class="text-gray-500 text-sm underline">Скасувати</button>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex-1 min-w-[300px]">
+    <h2 class="text-xl font-semibold mb-4">Коментарі до відповіді (<%= @comments.count %>)</h2>
+    <div class="space-y-3">
+      <% @comments.each do |comment| %>
+        <div class="p-3 rounded shadow border border-gray-200 bg-white">
+          <div class="flex justify-between">
+            <strong><%= comment.user.name || comment.user.email %></strong>
+            <% if comment.user_id == current_user.id %>
+              <%= link_to "Видалити", submission_comment_path(comment), method: :delete, data: { turbo_confirm: "Ви впевнені?" }, class: "text-red-600 text-sm" %>
+
+            <% end %>
+          </div>
+          <p><%= comment.content %></p>
+          <p class="text-gray-500 text-xs mt-1"><%= l(comment.created_at, format: :long) %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-6">
+      <%= form_with model: @new_comment, url: create_comment_system_course_material_submission_path(@submission), local: true do |f| %>
+        <%= f.text_area :content, rows: 3, placeholder: "Напишіть свій коментар...", class: "w-full border border-gray-200 rounded px-3 py-2" %>
+        <% if @new_comment.errors[:content].any? %>
+          <p class="text-red-500 text-sm"><%= @new_comment.errors[:content].first %></p>
+        <% end %>
+        <%= f.submit "Надіслати", class: "mt-2 bg-blue-600 text-white px-4 py-2 rounded" %>
+      <% end %>
+    </div>
+  </div>
+</div>

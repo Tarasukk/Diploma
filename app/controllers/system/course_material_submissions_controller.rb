@@ -9,6 +9,23 @@ module System
 
     def show
       @submission = CourseMaterialSubmission.find(params[:id])
+      @material = @submission.course_material
+      @comments = @submission.submission_comments.order(created_at: :asc)
+      @new_comment = SubmissionComment.new
+    end
+
+    def create_comment
+      @submission = CourseMaterialSubmission.find(params[:id])
+      @comment = @submission.submission_comments.build(comment_params.merge(user: current_user))
+
+      if @comment.save
+        redirect_to system_course_material_submission_path(@submission), notice: "Коментар додано"
+      else
+        @material = @submission.course_material
+        @comments = @submission.submission_comments.order(created_at: :asc)
+        @new_comment = @comment
+        render :show
+      end
     end
 
     def grade
@@ -29,6 +46,10 @@ module System
     end
 
     private
+
+    def comment_params
+      params.require(:submission_comment).permit(:content)
+    end
 
     def require_admin!
       #todo

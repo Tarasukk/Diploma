@@ -58,6 +58,7 @@ Rails.application.routes.draw do
     resources :course_material_submissions, only: %i[index show] do
       member do
         post :grade
+        post :create_comment
       end
     end
 
