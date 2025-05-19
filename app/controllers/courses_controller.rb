@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   before_action :assign_random_group_if_none, only: [:index]
 
   def index
-    @enrolled_courses = current_user.enrolled_courses
+    @enrolled_courses = current_user.enrolled_courses.sort_by { |course| -course.completion_percentage_for(current_user) }
     @available_courses = Course.where.not(id: @enrolled_courses.pluck(:id))
   end
 
