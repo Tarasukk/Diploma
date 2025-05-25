@@ -4,7 +4,7 @@
     <table class="w-full text-sm border border-gray-200">
       <tbody>
         <tr>
-          <td class="border border-gray-200 p-2">Студент групи <%= @submission.user.student_group.name %></td>
+          <td class="border border-gray-200 p-2">Студент групи <%= @submission.user&.student_group&.name %></td>
           <td class="border border-gray-200 p-2"><%= @submission.user.name %> | <%= @submission.user.email %></td>
         </tr>
         <tr class="bg-yellow-100">
@@ -21,7 +21,7 @@
           <td class="border border-gray-200 p-2 font-medium">Завантаження файлу</td>
           <td class="border border-gray-200 p-2">
             <% if @submission.file.attached? %>
-              <%= link_to @submission.file.filename.to_s, rails_blob_path(@submission.file, disposition: "attachment"), class: "text-blue-600 underline" %><br>
+              <%= link_to @submission.file.filename.to_s, rails_blob_path(@submission.file, disposition: "inline"), target: "_blank", class: "text-blue-600 underline" %><br>
             <% else %>
               <span class="text-gray-500">Файл не прикріплений</span>
             <% end %>
@@ -30,6 +30,35 @@
       </tbody>
     </table>
 
+    <% if @similarity_results.present? %>
+      <div class="mt-8 bg-yellow-50 border border-yellow-300 rounded p-4">
+        <h3 class="text-lg font-semibold mb-2">Схожі відповіді</h3>
+        <ul class="space-y-3">
+          <% @similarity_results.each do |result| %>
+            <li class="border border-gray-200 p-3 rounded bg-white">
+              <p>
+                <% student = result[:submission].user %>
+                <strong>Робота студента:</strong>
+                <%= student.name %> (<%= student.email %>) <br>
+                <strong>Схожість:</strong> <%= result[:similarity] %>%
+              </p>
+
+              <% if result[:submission].file.attached? %>
+                <p class="mt-1">
+                  <%= link_to "Переглянути файл", rails_blob_path(result[:submission].file, disposition: "inline"), target: "_blank", class: "text-blue-600 underline" %>
+                </p>
+              <% else %>
+                <p class="text-gray-500 mt-1">Файл не прикріплений</p>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <div class="mt-8 bg-yellow-50 border border-yellow-300 rounded p-4">
+        <%= link_to "Перевірити на плагіат", system_course_material_submission_path(@submission, check_plagiarism: true), class: "bg-blue-600 text-white rounded px-3 py-2 text-sm" %>
+      </div>
+    <% end %>
 
     <div class="mt-8" x-data="{ edit: <%= @submission.grade.present? ? 'false' : 'true' %> }">
       <h2 class="text-xl font-semibold mb-2">Відгук</h2>

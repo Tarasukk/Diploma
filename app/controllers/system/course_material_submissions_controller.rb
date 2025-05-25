@@ -11,6 +11,19 @@ module System
       @submission = CourseMaterialSubmission.find(params[:id])
       @material = @submission.course_material
       @comments = @submission.submission_comments.order(created_at: :asc)
+
+      if params[:check_plagiarism] == 'true'
+        raw_results = PlagiarismDetectionService.call(@submission)
+        @similar_submissions = CourseMaterialSubmission.where(id: raw_results.map { |r| r[:id] }).index_by(&:id)
+
+        @similarity_results = raw_results.map do |r|
+          {
+            submission: @similar_submissions[r[:id]],
+            similarity: r[:similarity]
+          }
+        end
+      end
+
       @new_comment = SubmissionComment.new
     end
 
