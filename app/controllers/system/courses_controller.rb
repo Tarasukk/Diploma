@@ -1,6 +1,22 @@
 # app/controllers/system/courses_controller.rb
 module System
   class CoursesController < ApplicationController
+    def index
+      @courses = Course.where(teacher_id: current_user.id)
+    end
+
+    def update
+      course = Course.find(params[:id])
+
+      if course.update(course_params)
+        flash[:notice] = "Курс оновлено"
+      else
+        flash[:alert] = course.errors.full_messages.join(', ')
+      end
+
+      redirect_to system_course_builder_courses_path
+    end
+
     def new
       @course = Course.new
     end

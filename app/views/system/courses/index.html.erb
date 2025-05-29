@@ -1,0 +1,23 @@
+<h1 class="text-xl font-bold mb-4">Мої курси</h1>
+
+<% @courses.each do |course| %>
+  <div class="border rounded p-4 mb-4 shadow-sm">
+    <h2 class="text-lg font-semibold"><%= course.title %></h2>
+    <p><%= course.description %></p>
+    <p>Кафедра: <%= course.department %></p>
+
+    <% if course.avatar.attached? %>
+      <div class="mt-2">
+        <%= image_tag course.avatar.variant(resize_to_limit: [150, 150]), class: "rounded" %>
+      </div>
+    <% end %>
+
+    <%= form_with model: course, url: system_update_course_path(course), method: :patch, local: true, html: { multipart: true } do |f| %>
+      <div class="mt-2">
+        <%= f.label :avatar, "Оновити файл" %><br>
+        <%= f.file_field :avatar %>
+      </div>
+      <%= f.submit "Оновити", class: "bg-blue-500 text-white px-4 py-1 rounded mt-2" %>
+    <% end %>
+  </div>
+<% end %>

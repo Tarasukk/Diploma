@@ -74,5 +74,7 @@ Rails.application.routes.draw do
     post 'course_builder/create_section', to: 'courses#create_section'
     post 'course_builder/create_material', to: 'courses#create_material'
     post 'course_builder/create_event', to: 'courses#create_event'
+    get 'course_builder/courses', to: 'courses#index'
+    patch 'course_builder/update_course/:id', to: 'courses#update', as: :update_course
   end
 end
