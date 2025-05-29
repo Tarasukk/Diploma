@@ -1,24 +1,48 @@
-# README
+# Diploma Work – Educational Platform
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project was created as part of my Bachelor's degree thesis:  
+🔗 [https://diploma-work.org/](https://diploma-work.org/)
 
-Things you may want to cover:
+> ⚠️ **Note:** This project was built in a rush specifically for my bachelor’s defense. Please don’t judge my technical skills solely based on this code 🙂
 
-* Ruby version
+## Description
 
-* System dependencies
+The platform is designed to support the educational process in schools and universities. It provides basic functionality for:
+- course management;
+- uploading and reviewing educational materials;
+- grading system;
+- basic plagiarism detection.
 
-* Configuration
+## Tech Stack
 
-* Database creation
+- **Ruby on Rails**: 7.2  
+- **Ruby**: 3.2.2  
+- **Deployment**: via [Kamal](https://kamal.deploy.com/) to a DigitalOcean Droplet
 
-* Database initialization
+## Getting Started
 
-* How to run the test suite
+### Prerequisites
 
-* Services (job queues, cache servers, search engines, etc.)
+- Ruby 3.2.2
+- PostgreSQL
+- Redis
+- Node.js & Yarn
+- ImageMagick (for ActiveStorage variants)
+- Docker (optional for deployment)
 
-* Deployment instructions
+### Setup
 
-* ...
+```bash
+# Clone the repository
+git clone https://github.com/Tarasukk/Diploma.git
+cd diploma
+
+# Install dependencies
+bundle install
+yarn install
+
+# Set up the database
+rails db:setup
+
+# Start the server
+bin/dev
