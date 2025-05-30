@@ -1,4 +1,4 @@
-# Diploma Work – Educational Platform
+# [Diploma Work – Educational Platform](https://diploma-work.org/)
 
 This project was created as part of my Bachelor's degree thesis:  
 🔗 [https://diploma-work.org/](https://diploma-work.org/)
@@ -17,7 +17,7 @@ The platform is designed to support the educational process in schools and unive
 
 - **Ruby on Rails**: 7.2  
 - **Ruby**: 3.2.2  
-- **Deployment**: via [Kamal](https://kamal.deploy.com/) to a DigitalOcean Droplet
+- **Deployment**: via [Kamal](https://kamal-deploy.org/) to a DigitalOcean Droplet
 
 ## Getting Started
 
